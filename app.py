@@ -103,11 +103,10 @@ else:
                         
                         # Mostra il bottone elimina solo a Founder e Moderatore
                         if st.session_state["ruolo"] in ["Founder", "Moderatore"]:
-                            # Usiamo on_click per eseguire l'azione prima del rinfresco della pagina
+                            # Abbiamo rimosso il parametro size="small" per garantire la compatibilità
                             st.button(
-                                f"🗑️ Elimina questo commento", 
+                                f"🗑️ Elimina", 
                                 key=f"del_{proc}_{idx}", 
-                                size="small",
                                 on_click=elimina_commento, 
                                 args=(proc, idx)
                             )
