@@ -16,7 +16,7 @@ USER_DB = {
     "base_user": {"password": "password789", "ruolo": "Base", "nome_completo": "Ass. Verdi"}
 }
 
-# 2. DATABASE DELLE PROCEDURE (Utilizzato anche dall'Assistente AI per la scansione semantica)
+# 2. DATABASE DELLE PROCEDURE (Utilizzato dall'Assistente AI)
 PROCEDURE_DETTAGLI = {
     "Presa in carico del paziente presso gli studi odontoiatrici": 
         "Accoglienza del paziente, verifica dell'anamnesi clinica recente e del consenso informato firmato. "
@@ -49,20 +49,56 @@ PROCEDURE_DETTAGLI = {
         "e passaggio ordinato di: mordenzante, adesivo, compositi fluidi e condensabili, lampada polimerizzatrice."
 }
 
-# 3. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
+# 3. CATALOGO STRUMENTARIO E FERRI ORTODONTICI (Riferimento Catalogo Gerhò)
+STRUMENTARIO_ORTO = [
+    {
+        "nome": "Pinza di Weingart",
+        "ref": "GH-3402",
+        "tipo": "Utility / Bandaggio",
+        "ambulatorio": "Ambulatorio di Ortodonzia (Studio 2)",
+        "descrizione": "Pinza universale con punte zigrinate e curve per afferrare e guidare l'arco ortodontico durante l'inserimento nei tubi e nei bracket. Massima presa senza danneggiare il filo.",
+        "immagine": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        "nome": "Tronchese di Taglio Distale",
+        "ref": "GH-3115",
+        "tipo": "Taglio fili duri",
+        "ambulatorio": "Ambulatorio di Ortodonzia (Studio 2)",
+        "descrizione": "Tronchese con sistema di ritenuta del filo reciso. Taglia l'arco a filo della scanalatura del tubo vestibolare trattenendo lo spezzone per evitare che cada nella bocca del paziente.",
+        "immagine": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        "nome": "Pinza di Adams",
+        "ref": "GH-3208",
+        "tipo": "Piegatura fili / Lab",
+        "ambulatorio": "Ambulatorio di Ortodonzia e Laboratorio interno",
+        "descrizione": "Pinza classica per la formatura e la piegatura precisa di fili ortodontici rigidi e per l'adattamento dei ganci di tenuta degli apparecchi mobili (fili fino a 0.7mm).",
+        "immagine": "https://images.unsplash.com/photo-1512223792601-592a9809eed4?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        "nome": "Posizionatore di Bracket (Gauge)",
+        "ref": "GH-1104",
+        "tipo": "Posizionamento / Misura",
+        "ambulatorio": "Ambulatorio di Ortodonzia (Studio 2)",
+        "descrizione": "Strumento a croce millimetrato per determinare l'esatta altezza dello slot del bracket rispetto al margine incisale o occlusale dell'elemento dentario (misure 3.5 - 4.0 - 4.5 - 5.0 mm).",
+        "immagine": "https://images.unsplash.com/photo-1579684389782-64d84b5e901a?auto=format&fit=crop&w=400&q=80"
+    }
+]
+
+# 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
 QUIZ_DATA = {
     "Accoglienza e Magazzino": [
         {"domanda": "Quale test si esegue per verificare la penetrazione del vapore nei corpi cavi in autoclave?", "opzioni": ["Bowie & Dick Test", "Helix Test", "Spore Test"], "corretta": "Helix Test"},
         {"domanda": "Cosa si verifica prioritariamente nella fase di presa in carico del paziente?", "opzioni": ["L'appuntamento successivo", "L'anamnesi recente e il consenso firmato", "Il pagamento del saldo"], "corretta": "L'anamnesi recente e il consenso firmato"}
     ],
     "Assistenza alla Poltrona": [
-        {"domanda": "Quale material necessita di acido ortofosforico per il mordenzamento in Conservativa?", "opzioni": ["L'idrossido di calcio", "Lo smalto e la dentina per l'adesivo", "L'ossido di zinco eugenolo"], "corretta": "Lo smalto e la dentina per l'adesivo"},
+        {"domanda": "Quale materiale necessita di acido ortofosforico per il mordenzamento in Conservativa?", "opzioni": ["L'idrossido di calcio", "Lo smalto e la dentina per l'adesivo", "L'ossido di zinco eugenolo"], "corretta": "Lo smalto e la dentina per l'adesivo"},
         {"domanda": "Quali pinze sono considerate di utilità generale in Ortodonzia?", "opzioni": ["Pinze di Weingart e Ash", "Pinze di Pean", "Pinze da estrazione"], "corretta": "Pinze di Weingart e Ash"},
         {"domanda": "Come vanno trattati i manufatti protesici prima dell'invio al laboratorio?", "opzioni": ["Solo sciacquati con acqua", "Disinfettati con livello intermedio", "Sterilizzati in autoclave"], "corretta": "Disinfettati con livello intermedio"}
     ]
 }
 
-# 4. INIZIALIZZAZIONE SESSION STATE
+# 5. INIZIALIZZAZIONE SESSION STATE
 if "autenticato" not in st.session_state:
     st.session_state["autenticato"] = False
     st.session_state["username"] = ""
@@ -93,7 +129,7 @@ def vota_up(procedura):
 def vota_down(procedura):
     st.session_state["voti"][procedura]["down"] += 1
 
-# 5. INTERFACCIA DI LOGIN
+# 6. INTERFACCIA DI LOGIN
 if not st.session_state["autenticato"]:
     st.title("🔒 Piattaforma Sperimentale Odontoiatrica")
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -111,7 +147,7 @@ if not st.session_state["autenticato"]:
                 else:
                     st.error("Credenziali errate.")
 
-# 6. AREA APPLICAZIONE
+# 7. AREA APPLICAZIONE
 else:
     with st.sidebar:
         st.subheader(f"👤 {st.session_state['username']}")
@@ -122,41 +158,53 @@ else:
 
     st.title("🦷 Hub Operativo e Linee Guida di Studio")
     
-    # --- NUOVA SEZIONE: COPILOT AI DI REPARTO (Punto focale del progetto di miglioramento) ---
+    # --- ASSISTENTE AI POTENZIATO CON SCANSIONE DEI CODICI REF E FERRI ---
     st.markdown("---")
     with st.container():
         st.markdown("### 🤖 Assistente AI - Supporto Decisionale Clinico")
-        st.caption("L'Intelligenza Artificiale analizza in tempo reale i protocolli dello studio per rispondere a dubbi operativi immediati.")
+        st.caption("L'Intelligenza Artificiale analizza in tempo reale i protocolli dello studio e l'inventario dei ferri Gerhò.")
         
-        # Barra di ricerca per l'utente
-        query_ai = st.text_input("Formula una domanda clinica o logistica (es. 'Cosa serve per l'ortodonzia?' o 'Come gestisco il magazzino?'):", placeholder="Chiedi all'AI...")
+        query_ai = st.text_input("Formula una domanda clinica, logistica o inserisci un codice REF (es. 'A cosa serve il codice GH-3115?'):", placeholder="Chiedi all'AI...")
         
         if query_ai:
             query_clean = query_ai.lower()
             risposta_trovata = False
             
-            # Simulazione della logica dell'IA che estrae informazioni dal database interno delle procedure
-            for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
-                # Cerca parole chiave corrispondenti tra la domanda e i protocolli inseriti
-                parole_chiave = [w for w in query_clean.split() if len(w) > 4]
-                if any(parola in titolo_proc.lower() or parola in contenuto_proc.lower() for parola in parole_chiave):
-                    
-                    st.markdown(f"**🤖 Risposta dell'Assistente AI (Estratta da: *{titolo_proc}*):**")
-                    
-                    # Generazione del testo di risposta simulato basato sui dati reali della procedura
-                    st.info(f"In base al protocollo ufficiale dello studio relativo a **{titolo_proc}**, ecco le indicazioni operative: \n\n"
-                            f"*{contenuto_proc}*\n\n"
-                            f"⚠️ **Nota dell'IA:** Assicurarsi che ogni azione sia tracciata nel registro informatizzato di reparto per mantenere lo standard ISO di qualità.")
+            # 1. CONTROLLO AI SUL CATALOGO DEI FERRI CHIRURGICI
+            for ferro in STRUMENTARIO_ORTO:
+                if query_clean in ferro["nome"].lower() or query_clean in ferro["ref"].lower() or query_clean in ferro["tipo"].lower():
+                    st.markdown(f"**🤖 Risposta dell'Assistente AI (Identificato Strumento da Inventario):**")
+                    st.success(f"Ho trovato una corrispondenza nel catalogo **Gerhò**:\n\n"
+                               f"🔹 **Strumento**: {ferro['nome']} (Codice REF: `{ferro['ref']}`)\n"
+                               f"📍 **Uso Prevalente**: {ferro['ambulatorio']}\n"
+                               f"📝 **Dettagli d'uso**: {ferro['descrizione']}")
                     risposta_trovata = True
                     break
             
+            # 2. CONTROLLO SEZIONE PROCEDURE (se non ha trovato corrispondenza tra i ferri)
             if not risposta_trovata:
-                st.warning("🤖 **Risposta dell'Assistente AI:** La richiesta non trova un riscontro esatto nei protocolli attuali. "
-                           "Si consiglia di consultare il Coordinatore o inserire una nota di reparto nel Tab 'Procedure Cliniche' per richiedere l'integrazione di questa casistica.")
+                for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
+                    parole_chiave = [w for w in query_clean.split() if len(w) > 4]
+                    if any(parola in titolo_proc.lower() or parola in contenuto_proc.lower() for parola in parole_chiave):
+                        st.markdown(f"**🤖 Risposta dell'Assistente AI (Estratta da: *{titolo_proc}*):**")
+                        st.info(f"In base al protocollo ufficiale dello studio relativo a **{titolo_proc}**, ecco le indicazioni operative: \n\n"
+                                f"*{contenuto_proc}*\n\n"
+                                f"⚠️ **Nota dell'IA:** Assicurarsi che ogni azione sia tracciata nel registro informatizzato.")
+                        risposta_trovata = True
+                        break
+            
+            if not risposta_trovata:
+                st.warning("🤖 **Risposta dell'Assistente AI:** La richiesta non trova un riscontro nei protocolli o nello strumentario attuale.")
+                
     st.markdown("---")
 
-    # Navigazione principale dei Tab
-    tab_procedure, tab_mappa, tab_esercitati = st.tabs(["📋 Procedure Cliniche", "🗺️ Anatomia dell'Ambulatorio", "🎯 Esercitati"])
+    # Navigazione principale dei Tab (Inclusa la nuova scheda Ferri)
+    tab_procedure, tab_ferri, tab_mappa, tab_esercitati = st.tabs([
+        "📋 Procedure Cliniche", 
+        "🛠️ Strumentario Ortodonzia (Gerhò)", 
+        "🗺️ Anatomia dell'Ambulatorio", 
+        "🎯 Esercitati"
+    ])
 
     # --- TAB 1: PROCEDURE CLINICHE ---
     with tab_procedure:
@@ -193,7 +241,37 @@ else:
                         st.session_state["commenti"][proc].append(f"[{st.session_state['ruolo']}] {st.session_state['username']}: {nuovo_commento}")
                         st.rerun()
 
-    # --- TAB 2: MAPPA INTERATTIVA ---
+    # --- NUOVO TAB 2: STRUMENTARIO ORTODONZIA (Riferimento Gerhò) ---
+    with tab_ferri:
+        st.header("🛠️ Registro e Tracciabilità Ferri da Ortodonzia")
+        st.caption("Prontuario dei dispositivi medici e delle pinze specialistiche utilizzate nell'Unità Operativa. Codici REF validati su catalogo Gerhò.")
+        
+        # Filtro rapido di ricerca interno alla scheda
+        ricerca_ferro = st.text_input("Filtra rapidamente per nome strumento o codice REF:", key="search_ferri")
+        
+        for item in STRUMENTARIO_ORTO:
+            if ricerca_ferro.lower() in item["nome"].lower() or ricerca_ferro.lower() in item["ref"].lower():
+                with st.container():
+                    # Layout pulito a due colonne per ottimizzare lo scorrimento verticale ed esaltare l'immagine del ferro
+                    col_img, col_info = st.columns([1, 2])
+                    
+                    with col_img:
+                        st.image(item["immagine"], caption=item["nome"], use_container_width=True)
+                    
+                    with col_info:
+                        st.subheader(item["nome"])
+                        
+                        # Utilizzo di metriche visive per evidenziare i dati chiave per l'assistente
+                        c1, c2 = st.columns(2)
+                        c1.metric(label="Codice REF articolo (Gerhò)", value=item["ref"])
+                        c2.metric(label="Uso Principale", value=item["tipo"])
+                        
+                        st.markdown(f"📍 **Ambulatorio di pertinenza principale:** `{item['ambulatorio']}`")
+                        st.markdown(f"📝 **Indicazioni cliniche e manutenzione:** {item['descrizione']}")
+                    
+                    st.markdown("---")
+
+    # --- TAB 3: MAPPA INTERATTIVA ---
     with tab_mappa:
         st.header("Mappa Interattiva dell'Ambulatorio")
         html_content = """
@@ -221,7 +299,7 @@ else:
         """
         components.html(html_content, height=650, scrolling=False)
 
-    # --- TAB 3: GAMIFICATION ---
+    # --- TAB 4: GAMIFICATION ---
     with tab_esercitati:
         st.header("🎯 Sistema di Autovalutazione e Gamification")
         col_quiz, col_classifica = st.columns([6, 4])
