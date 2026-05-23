@@ -9,14 +9,14 @@ st.set_page_config(
     layout="wide"
 )
 
-# 1. DATABASE UTENTI SIMULATO (con l'aggiunta dei profili per la classifica)
+# 1. DATABASE UTENTI SIMULATO
 USER_DB = {
     "admin_founder": {"password": "password123", "ruolo": "Founder", "nome_completo": "Dott. Rossi (Founder)"},
     "mod_user": {"password": "password456", "ruolo": "Moderatore", "nome_completo": "Coord. Bianchi"},
     "base_user": {"password": "password789", "ruolo": "Base", "nome_completo": "Ass. Verdi"}
 }
 
-# 2. DATABASE DELLE PROCEDURE
+# 2. DATABASE DELLE PROCEDURE (Utilizzato anche dall'Assistente AI per la scansione semantica)
 PROCEDURE_DETTAGLI = {
     "Presa in carico del paziente presso gli studi odontoiatrici": 
         "Accoglienza del paziente, verifica dell'anamnesi clinica recente e del consenso informato firmato. "
@@ -56,7 +56,7 @@ QUIZ_DATA = {
         {"domanda": "Cosa si verifica prioritariamente nella fase di presa in carico del paziente?", "opzioni": ["L'appuntamento successivo", "L'anamnesi recente e il consenso firmato", "Il pagamento del saldo"], "corretta": "L'anamnesi recente e il consenso firmato"}
     ],
     "Assistenza alla Poltrona": [
-        {"domanda": "Quale materiale necessita di acido ortofosforico per il mordenzamento in Conservativa?", "opzioni": ["L'idrossido di calcio", "Lo smalto e la dentina per l'adesivo", "L'ossido di zinco eugenolo"], "corretta": "Lo smalto e la dentina per l'adesivo"},
+        {"domanda": "Quale material necessita di acido ortofosforico per il mordenzamento in Conservativa?", "opzioni": ["L'idrossido di calcio", "Lo smalto e la dentina per l'adesivo", "L'ossido di zinco eugenolo"], "corretta": "Lo smalto e la dentina per l'adesivo"},
         {"domanda": "Quali pinze sono considerate di utilità generale in Ortodonzia?", "opzioni": ["Pinze di Weingart e Ash", "Pinze di Pean", "Pinze da estrazione"], "corretta": "Pinze di Weingart e Ash"},
         {"domanda": "Come vanno trattati i manufatti protesici prima dell'invio al laboratorio?", "opzioni": ["Solo sciacquati con acqua", "Disinfettati con livello intermedio", "Sterilizzati in autoclave"], "corretta": "Disinfettati con livello intermedio"}
     ]
@@ -74,13 +74,9 @@ if "commenti" not in st.session_state:
 if "voti" not in st.session_state:
     st.session_state["voti"] = {titolo: {"up": 0, "down": 0} for titolo in PROCEDURE_DETTAGLI.keys()}
 
-# Dati accoppiati alla Gamification
 if "classifica" not in st.session_state:
-    st.session_state["classifica"] = {
-        "Coord. Bianchi": 120,
-        "Ass. Verdi": 95,
-        "Dott. Rossi (Founder)": 40
-    }
+    st.session_state["classifica"] = {"Coord. Bianchi": 120, "Ass. Verdi": 95, "Dott. Rossi (Founder)": 40}
+
 if "quiz_attivo" not in st.session_state:
     st.session_state["quiz_attivo"] = False
     st.session_state["domande_selezionate"] = []
@@ -125,27 +121,55 @@ else:
             st.rerun()
 
     st.title("🦷 Hub Operativo e Linee Guida di Studio")
+    
+    # --- NUOVA SEZIONE: COPILOT AI DI REPARTO (Punto focale del progetto di miglioramento) ---
+    st.markdown("---")
+    with st.container():
+        st.markdown("### 🤖 Assistente AI - Supporto Decisionale Clinico")
+        st.caption("L'Intelligenza Artificiale analizza in tempo reale i protocolli dello studio per rispondere a dubbi operativi immediati.")
+        
+        # Barra di ricerca per l'utente
+        query_ai = st.text_input("Formula una domanda clinica o logistica (es. 'Cosa serve per l'ortodonzia?' o 'Come gestisco il magazzino?'):", placeholder="Chiedi all'AI...")
+        
+        if query_ai:
+            query_clean = query_ai.lower()
+            risposta_trovata = False
+            
+            # Simulazione della logica dell'IA che estrae informazioni dal database interno delle procedure
+            for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
+                # Cerca parole chiave corrispondenti tra la domanda e i protocolli inseriti
+                parole_chiave = [w for w in query_clean.split() if len(w) > 4]
+                if any(parola in titolo_proc.lower() or parola in contenuto_proc.lower() for parola in parole_chiave):
+                    
+                    st.markdown(f"**🤖 Risposta dell'Assistente AI (Estratta da: *{titolo_proc}*):**")
+                    
+                    # Generazione del testo di risposta simulato basato sui dati reali della procedura
+                    st.info(f"In base al protocollo ufficiale dello studio relativo a **{titolo_proc}**, ecco le indicazioni operative: \n\n"
+                            f"*{contenuto_proc}*\n\n"
+                            f"⚠️ **Nota dell'IA:** Assicurarsi che ogni azione sia tracciata nel registro informatizzato di reparto per mantenere lo standard ISO di qualità.")
+                    risposta_trovata = True
+                    break
+            
+            if not risposta_trovata:
+                st.warning("🤖 **Risposta dell'Assistente AI:** La richiesta non trova un riscontro esatto nei protocolli attuali. "
+                           "Si consiglia di consultare il Coordinatore o inserire una nota di reparto nel Tab 'Procedure Cliniche' per richiedere l'integrazione di questa casistica.")
+    st.markdown("---")
+
+    # Navigazione principale dei Tab
     tab_procedure, tab_mappa, tab_esercitati = st.tabs(["📋 Procedure Cliniche", "🗺️ Anatomia dell'Ambulatorio", "🎯 Esercitati"])
 
     # --- TAB 1: PROCEDURE CLINICHE ---
     with tab_procedure:
         st.header("Protocolli e Standard di Assistenza")
-        
         for proc, descrizione in PROCEDURE_DETTAGLI.items():
             with st.expander(f"📖 {proc}", expanded=False):
-                
-                # Layout bilanciato: testo a sinistra, pulsanti di voto iconici e rimpiccioliti a destra
                 col_testo, col_feedback = st.columns([8, 2])
-                
                 with col_testo:
                     st.markdown(f"**Protocollo Operativo:**")
                     st.write(descrizione)
-                
                 with col_feedback:
                     up_c = st.session_state["voti"][proc]["up"]
                     down_c = st.session_state["voti"][proc]["down"]
-                    
-                    # Pulsanti rimpiccioliti e allineati a destra, senza riempimento
                     sub_col1, sub_col2 = st.columns(2)
                     with sub_col1:
                         st.button(f"︎🤝 {up_c}", key=f"up_{proc}", on_click=vota_up, args=(proc,), help="Procedura Chiara", use_container_width=True)
@@ -197,34 +221,25 @@ else:
         """
         components.html(html_content, height=650, scrolling=False)
 
-    # --- TAB 3: GAMIFICATION ("ESERCITATI") ---
+    # --- TAB 3: GAMIFICATION ---
     with tab_esercitati:
         st.header("🎯 Sistema di Autovalutazione e Gamification")
-        st.write("Mettiti alla prova per verificare la tua prontezza sui protocolli operativi dello studio.")
-        
-        # Divisione del pannello richiesto nelle due finestre/colonne affiancate
         col_quiz, col_classifica = st.columns([6, 4])
         
-        # FINESTRA 1: CONFIGURAZIONE ED ESECUZIONE DEL TEST
         with col_quiz:
             st.subheader("🛠️ Configura la tua Esercitazione")
-            
             if not st.session_state["quiz_attivo"]:
                 btn_argomento, btn_tutto = st.columns(2)
-                
                 with btn_argomento:
                     if st.button("📚 Esercitati per Argomento", use_container_width=True):
-                        # Carica solo un argomento a caso dal pool
                         argomento = random.choice(list(QUIZ_DATA.keys()))
                         st.session_state["domande_selezionate"] = QUIZ_DATA[argomento]
                         st.session_state["quiz_attivo"] = True
                         st.session_state["indice_domanda"] = 0
                         st.session_state["punteggio_sessione"] = 0
                         st.rerun()
-                        
                 with btn_tutto:
                     if st.button("🌐 Esercitati su Tutto", use_container_width=True):
-                        # Unisce tutte le domande di tutti gli argomenti
                         tutte_le_domande = []
                         for lista in QUIZ_DATA.values():
                             tutte_le_domande.extend(lista)
@@ -234,61 +249,35 @@ else:
                         st.session_state["indice_domanda"] = 0
                         st.session_state["punteggio_sessione"] = 0
                         st.rerun()
-                        
                 st.info("Scegli una modalità per avviare il set di domande interattive.")
-            
             else:
-                # Esecuzione attiva del Quiz
                 lista_domande = st.session_state["domande_selezionate"]
                 attuale = st.session_state["indice_domanda"]
-                
                 if attuale < len(lista_domande):
                     dati_domanda = lista_domande[attuale]
                     st.markdown(f"**Domanda {attuale + 1} di {len(lista_domande)}**")
                     st.info(dati_domanda["domanda"])
-                    
-                    # Risposte inserite tramite radio button privo di selezione iniziale automatica obbligatoria
                     risposta = st.radio("Seleziona la risposta corretta:", dati_domanda["opzioni"], key=f"q_{attuale}")
-                    
                     if st.button("Conferma Risposta ➔", use_container_width=True):
                         if risposta == dati_domanda["corretta"]:
-                            st.session_state["punteggio_sessione"] += 10 # 10 punti per risposta esatta
+                            st.session_state["punteggio_sessione"] += 10
                         st.session_state["indice_domanda"] += 1
                         st.rerun()
                 else:
-                    # Fine del test, calcolo ed inserimento nella classifica globale
                     st.success(f"🎉 Esercitazione completata! Punteggio ottenuto: +{st.session_state['punteggio_sessione']} punti.")
-                    
-                    # Recupera il nome visualizzato dell'utente corrente per salvarlo in classifica
                     nome_utente_attuale = USER_DB[st.session_state["username"]]["nome_completo"]
                     st.session_state["classifica"][nome_utente_attuale] += st.session_state["punteggio_sessione"]
-                    
                     if st.button("Chiudi e Salva in Classifica", use_container_width=True):
                         st.session_state["quiz_attivo"] = False
                         st.rerun()
 
-        # FINESTRA 2: CLASSIFICA IN BASE AI PUNTEGGI OTTENUTI
         with col_classifica:
             st.subheader("🏆 Classifica di Studio")
-            st.write("I punteggi vengono accumulati completando i moduli d'esercizio.")
-            
-            # Ordinamento decrescente dei punteggi salvati
             classifica_ordinata = sorted(st.session_state["classifica"].items(), key=lambda item: item[1], reverse=True)
-            
-            # Rendering grafico della classifica a tabella
             for posizione, (operatore, punti) in enumerate(classifica_ordinata, start=1):
                 medaglia = "🥇" if posizione == 1 else "🥈" if posizione == 2 else "🥉" if posizione == 3 else "👤"
-                
-                # Evidenzia visivamente la riga dell'utente attualmente connesso
                 nome_connesso = USER_DB[st.session_state["username"]]["nome_completo"]
                 if operatore == nome_connesso:
                     st.markdown(f"**{medaglia} Posizione {posizione}: {operatore} — {punti} PT (Tu)** 🌟")
                 else:
                     st.markdown(f"{medaglia} Posizione {posizione}: {operatore} — {punti} PT")
-            
-            # Bottone di reset simulato della classifica per scopi di sviluppo
-            st.write("")
-            if st.checkbox("Modalità Sviluppatore: Reset Classifica"):
-                if st.button("Azzera Punteggi"):
-                    st.session_state["classifica"] = {k: 0 for k in st.session_state["classifica"].keys()}
-                    st.rerun()
