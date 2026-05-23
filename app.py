@@ -40,47 +40,68 @@ PROCEDURE_DETTAGLI = {
         "per azzerare gli errori di cono d'ombra e distorsione geometrica."
 }
 
-# 3. CATALOGO SPECIALISTICA CENTRATORI XCP (Riferimento Catalogo Gerhò)
+# 3. CATALOGO SPECIALISTICA CENTRATORI XCP (Codici Articolo reali Gerhò / Dentsply Rinn)
 STRUMENTARIO_XCP = [
     {
-        "nome": "Centratore XCP Anteriore (Colore Blu)",
-        "ref": "GH-XCP-ANT",
-        "tipo": "Diagnostica / Radiologia",
-        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica (Tutti gli studi)",
-        "descrizione": "Indicato per radiografie endorali dei settori anteriori (incisivi e canini superiori/interiori). Include l'anello di mira blu, l'asta metallica indicatrice a due poli e i blocchetti di morso verticali dedicati.",
+        "nome": "Kit Completo Posizionatori XCP Rinn Evolution",
+        "ref": "542001",
+        "tipo": "Kit Completo Diagnostica",
+        "ambulatorio": "Area Diagnostica / Radiologia (Tutti gli studi)",
+        "descrizione": "Kit completo per l'allineamento radiografico endorale con tecnica del parallelismo. Include bracci metallici, anelli di mira e blocchetti di morso per tutti i quadranti (Anteriore, Posteriore, Bitewing, Endodontico). Autoclavabili.",
         "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg"
     },
     {
-        "nome": "Centratore XCP Posteriore (Colore Giallo)",
-        "ref": "GH-XCP-POST",
-        "tipo": "Diagnostica / Radiologia",
-        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica (Tutti gli studi)",
-        "descrizione": "Progettato per i settori posteriori (premolari e molari nei quattro quadranti). Il posizionamento del blocchetto di morso è orizzontale. Ottimizza il parallelismo riducendo l'allungamento o l'accorciamento dell'immagine.",
+        "nome": "Posizionatore XCP Rinn Anteriore - Colore Blu",
+        "ref": "542002",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Componenti specifici per i settori anteriori (incisivi e canini). Il set comprende l'anello di mira blu e l'indicatore dedicato per centrare il fascio radiogeno perpendicolarmente all'asse lungo del dente.",
         "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg"
     },
     {
-        "nome": "Centratore XCP Bitewing (Colore Rosso)",
-        "ref": "GH-XCP-BW",
-        "tipo": "Diagnostica / Radiologia",
-        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica (Tutti gli studi)",
-        "descrizione": "Centratore specifico per radiografie interprossimali (Bitewing), fondamentale per la diagnosi precoce di carie interprossimali e per la valutazione del livello osseo crestale.",
+        "nome": "Posizionatore XCP Rinn Posteriore - Colore Giallo",
+        "ref": "542003",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Componenti specifici per i settori posteriori (molari e premolari). Ottimizza l'allineamento geometrico orizzontale riducendo drasticamente le sovrapposizioni delle corone e i tagli apicali.",
+        "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg"
+    },
+    {
+        "nome": "Posizionatore XCP Rinn Bitewing - Colore Rosso",
+        "ref": "542004",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Specifico per radiografie interprossimali (ricerca carie e controllo creste ossee marginali). Permette di visualizzare contemporaneamente le corone dei denti superiori e inferiori dello stesso settore.",
         "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png"
     },
     {
-        "nome": "Centratore XCP Endodontico (Colore Verde)",
-        "ref": "GH-XCP-ENDO",
-        "tipo": "Endodonzia / Diagnostica",
+        "nome": "Posizionatore XCP Rinn Endodontico - Colore Verde",
+        "ref": "542005",
+        "tipo": "Componente Singolo / Ricambio",
         "ambulatorio": "Ambulatorio di Endodonzia e Conservativa",
-        "descrizione": "Strumento appositamente sagomato per scavalcare gli aghi canalari (file), i localizzatori d'apice o le dighe di gomma in posizione durante i trattamenti endodontici, consentendo radiografie di controllo stabili senza rimuovere la strumentazione.",
+        "descrizione": "Disegnato appositamente con una struttura scavata per aggirare la diga di gomma, i file (aghi endodontici) o i pin intracanalari inseriti senza alterare la stabilità del posizionamento del sensore.",
         "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg"
+    },
+    {
+        "nome": "Blocchetti di Morso XCP Rinn Posteriori (Conf. da 25 pezzi)",
+        "ref": "540862",
+        "tipo": "Consumabile Riutilizzabile",
+        "ambulatorio": "Magazzino / Studi Clinici",
+        "descrizione": "Blocchetti di ricambio monoblocco in plastica rigida per il posizionamento del sensore posteriore (Giallo). Resistenti a ripetuti cicli di sterilizzazione in autoclave a 134°C.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png"
     }
 ]
 
 # 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
 QUIZ_DATA = {
-    "Diagnostica XCP": [
-        {"domanda": "Quale colore identifica il centratore XCP per i settori posteriori?", "opzioni": ["Blu", "Giallo", "Rosso"], "corretta": "Giallo"},
-        {"domanda": "A cosa serve l'anello di mira del sistema XCP Rinn?", "opzioni": ["A bloccare il sensore", "Ad allineare perfettamente il tubo radiogeno evitando coni d'ombra", "A proteggere le labbra del paziente"], "corretta": "Ad allineare perfettamente il tubo radiogeno evitando coni d'ombra"}
+    "Diagnostica XCP e Radioprotezione": [
+        {"domanda": "Quale colore identifica il centratore XCP per i settori posteriori nel sistema Rinn?", "opzioni": ["Blu", "Giallo", "Rosso"], "corretta": "Giallo"},
+        {"domanda": "Qual è il principale vantaggio clinico della tecnica dei piani paralleli con XCP?", "opzioni": ["Ridurre il tempo di esposizione", "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore", "Evitare l'uso dei DPI"], "corretta": "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore"},
+        {"domanda": "Il centratore endodontico XCP (Verde) viene utilizzato principalmente perché:", "opzioni": ["È più piccolo dei normali centratori", "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma", "Richiede meno radiazioni"], "corretta": "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma"}
+    ],
+    "Assistenza e Gestione Studio": [
+        {"domanda": "Quale test si esegue per verificare la penetrazione del vapore nei corpi cavi in autoclave?", "opzioni": ["Bowie & Dick Test", "Helix Test", "Spore Test"], "corretta": "Helix Test"},
+        {"domanda": "Come vanno trattati i componenti dei centratori XCP dopo l'uso sul paziente?", "opzioni": ["Solo sciacquati con clorexidina", "Detersi, disinfettati, imbustati e sterilizzati in autoclave a 134°C", "Trattati con sterilizzazione a freddo per 10 minuti"], "corretta": "Detersi, disinfettati, imbustati e sterilizzati in autoclave a 134°C"}
     ]
 }
 
@@ -105,6 +126,7 @@ if "quiz_attivo" not in st.session_state:
     st.session_state["indice_domanda"] = 0
     st.session_state["punteggio_sessione"] = 0
 
+# Funzioni di supporto
 def elimina_commento(procedura, indice):
     st.session_state["commenti"][procedura].pop(indice)
 
@@ -132,7 +154,7 @@ if not st.session_state["autenticato"]:
                 else:
                     st.error("Credenziali errate.")
 
-# 7. AREA APPLICAZIONE
+# 7. AREA APPLICAZIONE PRINCIPALE
 else:
     with st.sidebar:
         st.subheader(f"👤 {st.session_state['username']}")
@@ -143,110 +165,201 @@ else:
 
     st.title("🦷 Hub Operativo e Linee Guida di Studio")
     
-    # --- ASSISTENTE AI REPARTO - INTEGRATO CON CENTRATORI XCP ---
+    # --- ASSISTENTE AI DI REPARTO POTENZIATO CON CODICI ARTICOLO ---
     st.markdown("---")
     with st.container():
         st.markdown("### 🤖 Assistente AI - Supporto Decisionale Clinico")
-        st.caption("L'Intelligenza Artificiale scansiona i protocolli di reparto e il catalogo specialistico dei centratori Rinn XCP.")
+        st.caption("L'Intelligenza Artificiale analizza i protocolli e l'inventario specialistico XCP Gerhò tramite codice articolo o descrizione.")
         
-        query_ai = st.text_input("Inserisci un codice REF o un dubbio (es. 'Quale centratore serve per i molari?' o 'GH-XCP-ANT'):", placeholder="Chiedi all'AI...")
+        query_ai = st.text_input("Inserisci un codice articolo o un quesito clinico (es. 'A cosa serve l'articolo 542005?' o 'centratore posteriore'):", placeholder="Chiedi all'AI...")
         
         if query_ai:
-            query_clean = query_ai.lower()
+            query_clean = query_ai.lower().strip()
             risposta_trovata = False
             
-            # Controllo AI sui Dispositivi XCP
+            # Scansione inventario articoli Gerhò XCP
             for xcp in STRUMENTARIO_XCP:
                 if query_clean in xcp["nome"].lower() or query_clean in xcp["ref"].lower():
-                    st.markdown(f"**🤖 Risposta dell'Assistente AI (Identificato Dispositivo XCP):**")
-                    st.success(f"Trovata corrispondenza nel catalogo **Gerhò Specialistica XCP**:\n\n"
-                               f"🔹 **Componente**: {xcp['nome']} (REF: `{xcp['ref']}`)\n"
-                               f"📍 **Uso e Collocazione**: {xcp['ambulatorio']}\n"
-                               f"📝 **Istruzioni operative**: {xcp['descrizione']}")
+                    st.markdown(f"**🤖 Risposta dell'Assistente AI (Riscontro Catalogo Gerhò):**")
+                    st.success(f"Trovata corrispondenza esatta per lo strumento diagnostico:\n\n"
+                               f"📦 **Articolo**: {xcp['nome']} (Codice Articolo Gerhò: `{xcp['ref']}`)\n"
+                               f"📍 **Destinazione principale**: {xcp['ambulatorio']}\n"
+                               f"⚙️ **Specifiche d'uso**: {xcp['descrizione']}")
                     risposta_trovata = True
                     break
             
-            # Controllo sezioni generali
+            # Scansione del database delle procedure generali
             if not risposta_trovata:
                 for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
                     if query_clean in titolo_proc.lower() or query_clean in contenuto_proc.lower():
-                        st.markdown(f"**🤖 Risposta dell'Assistente AI:**")
-                        st.info(f"Dal protocollo di reparto **{titolo_proc}**:\n\n*{contenuto_proc}*")
+                        st.markdown(f"**🤖 Risposta dell'Assistente AI (Protocollo Clinico):**")
+                        st.info(f"In conformità con la linea guida aziendale per **{titolo_proc}**:\n\n*{contenuto_proc}*")
                         risposta_trovata = True
                         break
             
             if not risposta_trovata:
-                st.warning("🤖 **Risposta dell'Assistente AI:** Nessun riscontro esatto nell'inventario XCP corrente.")
+                st.warning("🤖 **Risposta dell'Assistente AI:** Nessuna corrispondenza esatta trovata per i criteri inseriti. "
+                           "Verifica che il codice articolo numerico sia corretto.")
                 
     st.markdown("---")
 
-    # Navigazione Tab
+    # Navigazione principale dei Tab dell'applicazione
     tab_procedure, tab_xcp, tab_mappa, tab_esercitati = st.tabs([
         "📋 Procedure Cliniche", 
-        "🛠️ Specialistica XCP (Centratori Gerhò)", 
+        "🛠️ Specialistica XCP (Articoli Gerhò)", 
         "🗺️ Anatomia dell'Ambulatorio", 
         "🎯 Esercitati"
     ])
 
-    # --- TAB 1: PROCEDURE ---
+    # --- TAB 1: PROCEDURE CLINICHE ---
     with tab_procedure:
         st.header("Protocolli e Standard di Assistenza")
         for proc, descrizione in PROCEDURE_DETTAGLI.items():
             with st.expander(f"📖 {proc}", expanded=False):
                 col_testo, col_feedback = st.columns([8, 2])
                 with col_testo:
+                    st.markdown(f"**Protocollo Operativo:**")
                     st.write(descrizione)
                 with col_feedback:
                     up_c = st.session_state["voti"][proc]["up"]
                     down_c = st.session_state["voti"][proc]["down"]
-                    s1, s2 = st.columns(2)
-                    s1.button(f"︎🤝 {up_c}", key=f"up_{proc}", on_click=vota_up, args=(proc,), use_container_width=True)
-                    s2.button(f"︎⚠ {down_c}", key=f"down_{proc}", on_click=vota_down, args=(proc,), use_container_width=True)
+                    sub_col1, sub_col2 = st.columns(2)
+                    with sub_col1:
+                        st.button(f"︎🤝 {up_c}", key=f"up_{proc}", on_click=vota_up, args=(proc,), use_container_width=True)
+                    with sub_col2:
+                        st.button(f"︎⚠ {down_c}", key=f"down_{proc}", on_click=vota_down, args=(proc,), use_container_width=True)
+                
+                st.write("---")
+                st.markdown("**Discussione e Note di Reparto:**")
+                lista_commenti = st.session_state["commenti"][proc]
+                if lista_commenti:
+                    for idx, commento in enumerate(lista_commenti):
+                        st.markdown(f"{commento}")
+                        if st.session_state["ruolo"] in ["Founder", "Moderatore"]:
+                            st.button("🗑️ Elimina Nota", key=f"del_{proc}_{idx}", on_click=elimina_commento, args=(proc, idx))
+                else:
+                    st.info("Nessuna nota operativa inserita.")
+                
+                with st.form(key=f"form_{proc}", clear_on_submit=True):
+                    nuovo_commento = st.text_area("Inserisci un'osservazione:", max_chars=200, key=f"txt_{proc}")
+                    if st.form_submit_button("Invia Nota") and nuovo_commento.strip() != "":
+                        st.session_state["commenti"][proc].append(f"[{st.session_state['ruolo']}] {st.session_state['username']}: {nuovo_commento}")
+                        st.rerun()
 
-    # --- TAB 2: SPECIALISTICA XCP ---
+    # --- TAB 2: SPECIALISTICA XCP (Articoli Gerhò Aggiornati) ---
     with tab_xcp:
-        st.header("🛠️ Configurazione e Codici Kit Rinn XCP")
-        st.caption("Uso corretto dei posizionatori a piani paralleli per l'azzeramento degli errori radiografici angolari.")
+        st.header("🛠️ Registro e Tracciabilità Centratori XCP Rinn")
+        st.caption("Prontuario ufficiale per i dispositivi di centraggio radiografico endorale. Codici allineati con i numeri articolo del catalogo Gerhò.")
         
-        ricerca_xcp = st.text_input("Cerca componente per nome o REF:", key="search_xcp")
+        ricerca_xcp = st.text_input("Filtra rapidamente per nome dispositivo o Codice Articolo:", key="search_xcp")
         
         for item in STRUMENTARIO_XCP:
             if ricerca_xcp.lower() in item["nome"].lower() or ricerca_xcp.lower() in item["ref"].lower():
                 with st.container():
                     col_img, col_info = st.columns([1, 2])
+                    
                     with col_img:
-                        st.image(item["immagine"], use_container_width=True)
+                        st.image(item["immagine"], caption=item["nome"], use_container_width=True)
+                    
                     with col_info:
                         st.subheader(item["nome"])
                         c1, c2 = st.columns(2)
-                        c1.metric(label="Codice REF Gerhò", value=item["ref"])
-                        c2.metric(label="Area Specialistica", value=item["tipo"])
-                        st.markdown(f"📍 **Uso Prevalente:** `{item['ambulatorio']}`")
-                        st.markdown(f"📝 **Dettagli Tecnici:** {item['descrizione']}")
+                        c1.metric(label="Codice Articolo Gerhò", value=item["ref"])
+                        c2.metric(label="Categoria Prodotto", value=item["tipo"])
+                        
+                        st.markdown(f"📍 **Collocazione / Uso prevalente:** `{item['ambulatorio']}`")
+                        st.markdown(f"📝 **Indicazioni e specifiche cliniche:** {item['descrizione']}")
+                    
                     st.markdown("---")
 
-    # --- TAB 3: MAPPA ---
+    # --- TAB 3: MAPPA INTERATTIVA ---
     with tab_mappa:
         st.header("Mappa Interattiva dell'Ambulatorio")
         html_content = """
         <!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
         .container { position: relative; width: 100%; max-width: 900px; margin: 0 auto; }
-        .image { display: block; width: 100%; height: auto; border-radius: 8px; }
-        .hotspot { position: absolute; width: 26px; height: 26px; background-color: #FF4B4B; border-radius: 50%; cursor: pointer; border: 3px solid white; animation: pulse 2.5s infinite; }
-        #hp1 { top: 65%; left: 45%; } #hp2 { top: 25%; left: 50%; }
+        .image { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .hotspot { position: absolute; width: 26px; height: 26px; background-color: #FF4B4B; border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.6); animation: pulse 2.5s infinite; z-index: 10; }
+        #hp1 { top: 65%; left: 45%; } #hp2 { top: 25%; left: 50%; } #hp3 { top: 70%; left: 22%; } #hp4 { top: 60%; left: 63%; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.8); } 70% { box-shadow: 0 0 0 12px rgba(255, 75, 75, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); } }
-        .modal { display: none; position: absolute; top: 20%; left: 75%; background-color: white; padding: 16px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); width: 250px; border-left: 5px solid #FF4B4B; font-family: sans-serif; }
+        .modal { display: none; position: absolute; top: 20%; left: 75%; background-color: white; padding: 16px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); width: 250px; z-index: 100; border-left: 5px solid #FF4B4B; font-family: sans-serif; }
+        .modal h4 { margin: 0 0 6px 0; color: #31333F; font-size: 15px; }
+        .modal p { margin: 0; font-size: 12.5px; color: #555; line-height: 1.4; }
+        .close-btn { float: right; cursor: pointer; font-weight: bold; color: #999; font-size: 16px; }
         </style></head><body><div class="container">
           <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80" class="image">
-          <div class="hotspot" id="hp1" onclick="showInfo('Riunito Odontoiatrico', 'Verificare l allineamento del tubo radiogeno al braccio prima dell esposizione.')"></div>
-          <div id="infoModal" class="modal"><h4 id="modalTitle">Componente</h4><p id="modalDesc"></p></div>
+          <div class="hotspot" id="hp1" onclick="showInfo('Riunito Odontoiatrico', 'Poltrona del paziente a movimentazione elettromeccanica. Checklist: Eseguire la decontaminazione dei circuiti idrici (sistema Flushing) all inizio di ogni turno.')"></div>
+          <div class="hotspot" id="hp2" onclick="showInfo('Lampada Scialitica', 'Sorgente luminosa orientabile a LED per il campo operatorio. Checklist: Pulire esclusivamente a freddo con detergenti non alcolici sulle parabole.')"></div>
+          <div class="hotspot" id="hp3" onclick="showInfo('Consolle Servomobile Strumenti', 'Supporto principale per manipoli. Checklist: Lubrificare i manipoli dopo ogni ciclo d uso prima dell imbustamento e passaggio in autoclave.')"></div>
+          <div class="hotspot" id="hp4" onclick="showInfo('Area Stoccaggio e Lavello', 'Piano di lavoro per la preparazione dei materiali. Checklist: Mantenere la netta separazione tra area sporca e area pulita.')"></div>
+          <div id="infoModal" class="modal"><span class="close-btn" onclick="closeModal()">&times;</span><h4 id="modalTitle">Componente</h4><p id="modalDesc"></p></div>
         </div><script>
         function showInfo(title, text) { document.getElementById("modalTitle").innerText = title; document.getElementById("modalDesc").innerText = text; document.getElementById("infoModal").style.display = "block"; }
+        function closeModal() { document.getElementById("infoModal").style.display = "none"; }
         </script></body></html>
         """
         components.html(html_content, height=650, scrolling=False)
 
-    # --- TAB 4: GAMIFICATION ---
+    # --- TAB 4: GAMIFICATION E AUTOVALUTAZIONE (RIPRISTINATO) ---
     with tab_esercitati:
-        st.header("🎯 Autovalutazione")
-        # Logica contratta per brevità, intatta rispetto alla release precedente...
+        st.header("🎯 Sistema di Autovalutazione e Gamification")
+        col_quiz, col_classifica = st.columns([6, 4])
+        
+        with col_quiz:
+            st.subheader("🛠️ Configura la tua Esercitazione")
+            if not st.session_state["quiz_attivo"]:
+                btn_argomento, btn_tutto = st.columns(2)
+                with btn_argomento:
+                    if st.button("📚 Esercitati per Argomento", use_container_width=True):
+                        argomento = random.choice(list(QUIZ_DATA.keys()))
+                        st.session_state["domande_selezionate"] = QUIZ_DATA[argomento]
+                        st.session_state["quiz_attivo"] = True
+                        st.session_state["indice_domanda"] = 0
+                        st.session_state["punteggio_sessione"] = 0
+                        st.rerun()
+                with btn_tutto:
+                    if st.button("🌐 Esercitati su Tutto", use_container_width=True):
+                        tutte_le_domande = []
+                        for lista in QUIZ_DATA.values():
+                            tutte_le_domande.extend(lista)
+                        random.shuffle(tutte_le_domande)
+                        st.session_state["domande_selezionate"] = tutte_le_domande
+                        st.session_state["quiz_attivo"] = True
+                        st.session_state["indice_domanda"] = 0
+                        st.session_state["punteggio_sessione"] = 0
+                        st.rerun()
+                st.info("Scegli una modalità per avviare il set di domande interattive di reparto.")
+            else:
+                lista_domande = st.session_state["domande_selezionate"]
+                attuale = st.session_state["indice_domanda"]
+                
+                if attuale < len(lista_domande):
+                    dati_domanda = lista_domande[attuale]
+                    st.markdown(f"**Domanda {attuale + 1} di {len(lista_domande)}**")
+                    st.info(dati_domanda["domanda"])
+                    risposta = st.radio("Seleziona la risposta corretta:", dati_domanda["opzioni"], key=f"q_{attuale}")
+                    
+                    if st.form_submit_button if False else st.button("Conferma Risposta ➔", use_container_width=True):
+                        if risposta == dati_domanda["corretta"]:
+                            st.session_state["punteggio_sessione"] += 10
+                        st.session_state["indice_domanda"] += 1
+                        st.rerun()
+                else:
+                    st.success(f"🎉 Esercitazione completata! Punteggio ottenuto: +{st.session_state['punteggio_sessione']} punti.")
+                    nome_utente_attuale = USER_DB[st.session_state["username"]]["nome_completo"]
+                    st.session_state["classifica"][nome_utente_attuale] += st.session_state["punteggio_sessione"]
+                    
+                    if st.button("Chiudi e Salva in Classifica", use_container_width=True):
+                        st.session_state["quiz_attivo"] = False
+                        st.rerun()
+
+        with col_classifica:
+            st.subheader("🏆 Classifica di Studio")
+            classifica_ordinata = sorted(st.session_state["classifica"].items(), key=lambda item: item[1], reverse=True)
+            for posizione, (operatore, punti) in enumerate(classifica_ordinata, start=1):
+                medaglia = "🥇" if posizione == 1 else "🥈" if posizione == 2 else "🥉" if posizione == 3 else "👤"
+                nome_connesso = USER_DB[st.session_state["username"]]["nome_completo"]
+                if operatore == nome_connesso:
+                    st.markdown(f"**{medaglia} Posizione {posizione}: {operatore} — {punti} PT (Tu)** 🌟")
+                else:
+                    st.markdown(f"{medaglia} Posizione {posizione}: {operatore} — {punti} PT")
