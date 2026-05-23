@@ -41,7 +41,6 @@ PROCEDURE_DETTAGLI = {
 }
 
 # 3. CATALOGO AMPLIATO SPECIALISTICA ED INVENTARIO (Codici Articolo reali Gerhò)
-# Integrata l'intera gamma di frese per il tracciamento logistico e la ricerca AI
 STRUMENTARIO_XCP = [
     # --- Linea Diagnostica XCP Rinn ---
     {
@@ -167,7 +166,7 @@ STRUMENTARIO_XCP = [
     }
 ]
 
-# 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
+# 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION (Testuali)
 QUIZ_DATA = {
     "Diagnostica XCP e Radioprotezione": [
         {"domanda": "Quale colore identifica il centratore XCP per i settori posteriori nel sistema Rinn?", "opzioni": ["Blu", "Giallo", "Rosso"], "corretta": "Giallo"},
@@ -195,8 +194,10 @@ if "voti" not in st.session_state:
 if "classifica" not in st.session_state:
     st.session_state["classifica"] = {"Coord. Bianchi": 120, "Ass. Verdi": 95, "Dott. Rossi (Founder)": 40}
 
+# Variabili di stato del Quiz generico ed Immagini
 if "quiz_attivo" not in st.session_state:
     st.session_state["quiz_attivo"] = False
+    st.session_state["tipo_quiz"] = "testuale" # "testuale" o "immagini"
     st.session_state["domande_selezionate"] = []
     st.session_state["indice_domanda"] = 0
     st.session_state["punteggio_sessione"] = 0
@@ -372,7 +373,7 @@ else:
                 | **Zekrya Chirurgica** | Gambo lungo, forma conica allungata, lame elicoidali pronunciate, punta liscia non tagliente. | Odontosezione (separazione radici), osteotomia, estrazioni complesse di residui radicolari profondi. |
                 | **Palla (Sferica)** | Testa perfettamente rotonda. Può essere diamantata (ruvida) o multilama in carburo (tagliente). | Apertura della camera pulpare per endodonzia, rimozione della carie (dentina infetta). |
                 | **Cilindrica a punta piatta** | Pareti dritte e parallele, la testa termina con un angolo netto a 90 gradi. | Preparazione di spalle protesiche nette, separazione dei punti di contatto interprossimali. |
-                | **Conica a punta arrotondata** | Pareti strombate che si stringono leggermente verso l'alto; la punta è smussata e dolce. | Preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato). |
+                | **Conica a punta arrotondata** | Pareti strombate che si stringono leggermente verso l'alto; die punta è smussata e dolce. | Preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato). |
                 | **A Siluro (Torpedine)** | Profilo dritto e molto allungato, che termina con una punta ogivale arrotondata. | Preparazione dei margini di finitura per corone in metallo-ceramica o ceramica integrale. |
                 | **A Fiamma** | Forma panciuta al centro che si assottiglia progressivamente verso l'estremità superiore. | Rifinitura e modellazione dei margini occlusali, palatali e dei restauri estetici in resina composita. |
                 """
@@ -439,35 +440,70 @@ else:
         """
         components.html(html_content, height=650, scrolling=False)
 
-    # --- TAB 4: GAMIFICATION E AUTOVALUTAZIONE ---
+    # --- TAB 4: GAMIFICATION E AUTOVALUTAZIONE (Con Quiz per Immagini del Catalogo) ---
     with tab_esercitati:
         st.header("🎯 Sistema di Autovalutazione e Gamification")
         col_quiz, col_classifica = st.columns([6, 4])
         
         with col_quiz:
             st.subheader("🛠️ Configura la tua Esercitazione")
+            
             if not st.session_state["quiz_attivo"]:
-                btn_argomento, btn_tutto = st.columns(2)
+                btn_argomento, btn_tutto, btn_immagini = st.columns(3)
+                
                 with btn_argomento:
-                    if st.button("📚 Esercitati per Argomento", use_container_width=True):
+                    if st.button("📚 Per Argomento", use_container_width=True):
                         argomento = random.choice(list(QUIZ_DATA.keys()))
                         st.session_state["domande_selezionate"] = QUIZ_DATA[argomento]
                         st.session_state["quiz_attivo"] = True
+                        st.session_state["tipo_quiz"] = "testuale"
                         st.session_state["indice_domanda"] = 0
                         st.session_state["punteggio_sessione"] = 0
                         st.rerun()
+                        
                 with btn_tutto:
-                    if st.button("🌐 Esercitati su Tutto", use_container_width=True):
+                    if st.button("🌐 Su Tutto (Test)", use_container_width=True):
                         tutte_le_domande = []
                         for lista in QUIZ_DATA.values():
                             tutte_le_domande.extend(lista)
                         random.shuffle(tutte_le_domande)
                         st.session_state["domande_selezionate"] = tutte_le_domande
                         st.session_state["quiz_attivo"] = True
+                        st.session_state["tipo_quiz"] = "testuale"
                         st.session_state["indice_domanda"] = 0
                         st.session_state["punteggio_sessione"] = 0
                         st.rerun()
-                st.info("Scegli una modalità per avviare il set di domande interattive di reparto.")
+
+                with btn_immagini:
+                    if st.button("📸 Per Immagini (Catalogo)", use_container_width=True):
+                        # Generazione dinamica dei quiz basati sulle immagini del catalogo Gerhò
+                        quiz_visivi = []
+                        # Estraiamo tutti gli articoli disponibili con immagini valide
+                        pool_articoli = STRUMENTARIO_XCP.copy()
+                        random.shuffle(pool_articoli)
+                        
+                        # Costruiamo 4 domande visive pesate sul catalogo corrente
+                        for item in pool_articoli[:4]:
+                            errati = [x["nome"] for x in STRUMENTARIO_XCP if x["nome"] != item["nome"]]
+                            opzioni_domanda = random.sample(errati, 2) + [item["nome"]]
+                            random.shuffle(opzioni_domanda)
+                            
+                            quiz_visivi.append({
+                                "immagine": item["immagine"],
+                                "domanda": f"Riconosci questo dispositivo specialistico / fresa dal catalogo di studio. Qual è il suo nome commerciale corretto? (REF Gerhò associata: {item['ref']})",
+                                "opzioni": opzioni_domanda,
+                                "corretta": item["nome"]
+                            })
+                        
+                        st.session_state["domande_selezionate"] = quiz_visivi
+                        st.session_state["quiz_attivo"] = True
+                        st.session_state["tipo_quiz"] = "immagini"
+                        st.session_state["indice_domanda"] = 0
+                        st.session_state["punteggio_sessione"] = 0
+                        st.rerun()
+                        
+                st.info("Seleziona una modalità per avviare il set di domande interattive. La modalità immagini metterà alla prova la tua memoria visiva sul magazzino!")
+            
             else:
                 lista_domande = st.session_state["domande_selezionate"]
                 attuale = st.session_state["indice_domanda"]
@@ -475,12 +511,21 @@ else:
                 if attuale < len(lista_domande):
                     dati_domanda = lista_domande[attuale]
                     st.markdown(f"**Domanda {attuale + 1} di {len(lista_domande)}**")
+                    
+                    # Se il quiz è di tipo visivo, mostra prima l'immagine del catalogo
+                    if st.session_state["tipo_quiz"] == "immagini":
+                        st.image(dati_domanda["immagine"], width=280, caption="Strumento da identificare")
+                        
                     st.info(dati_domanda["domanda"])
                     risposta = st.radio("Seleziona la risposta corretta:", dati_domanda["opzioni"], key=f"q_{attuale}")
                     
                     if st.button("Conferma Risposta ➔", use_container_width=True):
                         if risposta == dati_domanda["corretta"]:
-                            st.session_state["punteggio_sessione"] += 10
+                            st.session_state["punteggio_sessione"] += 15 if st.session_state["tipo_quiz"] == "immagini" else 10
+                            st.toast("✅ Corretto!", icon="✨")
+                        else:
+                            st.toast(f"❌ Errato! Era: {dati_domanda['corretta']}", icon="🚨")
+                            
                         st.session_state["indice_domanda"] += 1
                         st.rerun()
                 else:
