@@ -40,8 +40,8 @@ PROCEDURE_DETTAGLI = {
         "per azzerare gli errori di cono d'ombra e distorsione geometrica."
 }
 
-# 3. CATALOGO AMPIATO SPECIALISTICA ED INVENTARIO (Codici Articolo reali Gerhò)
-# Integrata gestione scorte per simulazione logistica avanzata
+# 3. CATALOGO AMPLIATO SPECIALISTICA ED INVENTARIO (Codici Articolo reali Gerhò)
+# Integrata l'intera gamma di frese per il tracciamento logistico e la ricerca AI
 STRUMENTARIO_XCP = [
     # --- Linea Diagnostica XCP Rinn ---
     {
@@ -71,7 +71,7 @@ STRUMENTARIO_XCP = [
         "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
         "descrizione": "Componenti specifici per i settori posteriori (molari e premolari). Ottimizza l'allineamento geometrico orizzontale.",
         "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
-        "giacenza": 2, # Sotto soglia per test logistica
+        "giacenza": 2, 
         "soglia_minima": 4
     },
     {
@@ -91,7 +91,7 @@ STRUMENTARIO_XCP = [
         "ambulatorio": "Ambulatorio di Endodonzia e Conservativa",
         "descrizione": "Disegnato appositamente con una struttura scavata per aggirare la diga di gomma o gli aghi endodontici senza perdere stabilità.",
         "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
-        "giacenza": 1, # Sotto soglia per test logistica
+        "giacenza": 1, 
         "soglia_minima": 2
     },
     {
@@ -110,8 +110,8 @@ STRUMENTARIO_XCP = [
         "ref": "110432",
         "tipo": "Strumentario Rotante / Chirurgia",
         "ambulatorio": "Ambulatorio di Chirurgia e Implantologia",
-        "descrizione": "Fresa a testa emisferica e taglienti laterali ideata per l'odontotomia, la separazione delle radici e la resezione ossea. Lunghezza FGXL.",
-        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "descrizione": "Gambo lungo, forma conica allungata, lame elicoidali pronunciate, punta liscia non tagliente. Ideata per l'odontosezione (separazione radici), osteotomia ed estrazioni complesse di residui radicolari profondi.",
+        "immagine": "https://dental-rotors.com/wp-content/uploads/2025/01/H151L-ZEKRYA-22mm-large.webp",
         "giacenza": 15,
         "soglia_minima": 6
     },
@@ -120,100 +120,59 @@ STRUMENTARIO_XCP = [
         "ref": "402154",
         "tipo": "Strumentario Rotante / Conservativa",
         "ambulatorio": "Tutti gli studi / Conservativa",
-        "descrizione": "Fresa diamantata sferica per l'apertura della cavità cariosa e l'escavazione della dentina infetta. Alta precisione di taglio.",
+        "descrizione": "Testa perfettamente rotonda a grana media. Fresa diamantata sferica per l'apertura della camera pulpare per endodonzia, l'apertura della cavità cariosa e la rimozione della carie (dentina infetta).",
         "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
-        "giacenza": 3, # Sotto soglia per test logistica
+        "giacenza": 3, 
         "soglia_minima": 10
+    },
+    {
+        "nome": "Fresa Cilindrica a Punta Piatta",
+        "ref": "402155",
+        "tipo": "Strumentario Rotante / Protesi",
+        "ambulatorio": "Studi Clinici / Protesi",
+        "descrizione": "Pareti dritte e parallele, la testa termina con un angolo netto a 90 gradi. Utilizzata per la preparazione di spalle protesiche nette e la separazione dei punti di contatto interprossimali.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 8,
+        "soglia_minima": 5
+    },
+    {
+        "nome": "Fresa Conica a Punta Arrotondata",
+        "ref": "402156",
+        "tipo": "Strumentario Rotante / Protesi",
+        "ambulatorio": "Studi Clinici / Protesi",
+        "descrizione": "Pareti strombate che si stringono leggermente verso l'alto; la punta è smussata e dolce. Indicata per la preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato).",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 4,
+        "soglia_minima": 6
+    },
+    {
+        "nome": "Fresa a Siluro (Torpedine)",
+        "ref": "402157",
+        "tipo": "Strumentario Rotante / Protesi",
+        "ambulatorio": "Studi Clinici / Protesi",
+        "descrizione": "Profilo dritto e molto allungato, che termina con una punta ogivale arrotondata. Ideale per la preparazione dei margini di finitura per corone in metallo-ceramica o ceramica integrale.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 12,
+        "soglia_minima": 8
+    },
+    {
+        "nome": "Fresa a Fiamma",
+        "ref": "402158",
+        "tipo": "Strumentario Rotante / Conservativa ed Estetica",
+        "ambulatorio": "Tutti gli studi / Conservativa",
+        "descrizione": "Forma panciuta al centro che si assottiglia progressivamente verso l'estremità superiore. Utilizzata per la rifinitura e modellazione dei margini occlusali, palatali e dei restauri estetici in resina composita.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 2,
+        "soglia_minima": 5
     }
-<!-- SCHEDA: PRODOTTI UTILIZZATI (ARTICOLI GERHÒ) -->
-<div class="scheda-prodotti" style="font-family: 'Google Sans', Arial, sans-serif; color: #333; line-height: 1.25;">
-    
-    <h2 style="color: #004B87;">Scheda: Prodotti utilizzati (Articoli Gerhò)</h2>
-    <p><em>Nota didattica: Questa scheda è ottimizzata per la memorizzazione visiva, il riconoscimento delle geometrie delle frese e la loro destinazione d'uso clinico. La gestione delle scorte e delle quantità di magazzino è stata rimossa.</em></p>
-    
-    <br>
-
-    <h3 style="color: #0073aa;">Focus Strumento: Fresa Chirurgica Zekrya</h3>
-    <p>La <strong>fresa Zekrya</strong> è uno degli strumenti chirurgici più importanti in odontoiatria. La sua parte attiva è caratterizzata da una punta arrotondata e non tagliente (per preservare i tessuti molli o il pavimento della camera pulpare) e da lame elicoidali in carburo di tungsteno che tagliano lateralmente in modo estremamente efficiente.</p>
-    
-    <!-- Immagine reale della Zekrya incorporata nel codice -->
-    <div class="image-container" style="text-align: center; margin: 25px 0;">
-        <img src="https://dental-rotors.com/wp-content/uploads/2025/01/H151L-ZEKRYA-22mm-large.webp" alt="Fresa chirurgica Zekrya con lame elicoidali in carburo di tungsteno" style="max-width: 350px; width: 100%; height: auto; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
-        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">Dettaglio della parte attiva di una fresa Zekrya (Carburo di Tungsteno)</p>
-    </div>
-
-    <br>
-
-    <h3 style="color: #0073aa;">Catalogo Visivo delle Forme ed Uso Clinico</h3>
-    <p>Usa questa guida visiva per confrontare le diverse forme geometriche delle frese, associando l'aspetto grafico al nome corretto e alla sua applicazione sul paziente.</p>
-
-    <!-- Immagine del catalogo delle forme incorporata nel codice -->
-    <div class="image-container" style="text-align: center; margin: 25px 0;">
-        <img src="https://www.dentaltix.com/it/sites/default/files/forma-delle-frese-dentali.jpg" alt="Tabella comparativa delle forme delle frese dentali: palla, fiamma, cilindro, siluro" style="max-width: 100%; height: auto; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
-        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">Mappa visiva delle principali geometrie delle frese odontoiatriche</p>
-    </div>
-
-    <br>
-
-    <!-- Tabella didattica delle frese -->
-    <table border="1" cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #e0e0e0;">
-        <thead>
-            <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #004B87;">
-                <th style="color: #004B87;">Nome della Fresa</th>
-                <th style="color: #004B87;">Caratteristiche Visive per il Riconoscimento</th>
-                <th style="color: #004B87;">Destinazione d'Uso Principale</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Zekrya Chirurgica</strong></td>
-                <td>Gambo lungo, forma conica allungata, lame elicoidali pronunciate, punta liscia non tagliente.</td>
-                <td>Odontosezione (separazione radici), osteotomia, estrazioni complesse di residui radicolari profondi.</td>
-            </tr>
-            <tr>
-                <td><strong>Palla (Sferica)</strong></td>
-                <td>Testa perfettamente rotonda. Può essere diamantata (ruvida) o multilama in carburo (tagliente).</td>
-                <td>Apertura della camera pulpare per endodonzia, rimozione della carie (dentina infetta).</td>
-            </tr>
-            <tr>
-                <td><strong>Cilindrica a punta piatta</strong></td>
-                <td>Pareti dritte e parallele, la testa termina con un angolo netto a 90 gradi.</td>
-                <td>Preparazione di spalle protesiche nette, separazione dei punti di contatto interprossimali.</td>
-            </tr>
-            <tr>
-                <td><strong>Conica a punta arrotondata</strong></td>
-                <td>Pareti strombate che si stringono leggermente verso l'alto; la punta è smussata e dolce.</td>
-                <td>Preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato).</td>
-            </tr>
-            <tr>
-                <td><strong>A Siluro (Torpedine)</strong></td>
-                <td>Profilo dritto e molto allungato, che termina con una punta ogivale arrotondata.</td>
-                <td>Preparazione dei margini di finitura per corone in metallo-ceramica o ceramica integrale.</td>
-            </tr>
-            <tr>
-                <td><strong>A Fiamma</strong></td>
-                <td>Forma panciuta al centro che si assottiglia progressivamente verso l'estremità superiore.</td>
-                <td>Rifinitura e modellazione dei margini occlusali, palatali e dei restauri estetici in resina composita.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <br>
-
-    <!-- Box didattico finale -->
-    <div class="info-box" style="background-color: #f4f6f8; border-left: 4px solid #004B87; padding: 15px; margin-top: 25px; border-radius: 0 4px 4px 0;">
-        <p style="margin: 0; font-weight: bold; color: #004B87;">💡 Consiglio per lo studio visivo:</p>
-        <p style="margin: 5px 0 0 0;">Associa sempre l'immagine del catalogo alla tabella: guarda la forma geometrica del disegno (es. il <em>Siluro</em> o la <em>Palla</em>) e leggi subito a fianco a cosa serve sulla poltrona. Questo tipo di memoria visiva ti aiuterà a preparare il vassoio per il medico in frazioni di secondo.</p>
-    </div>
-
-</div>]
+]
 
 # 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
 QUIZ_DATA = {
     "Diagnostica XCP e Radioprotezione": [
         {"domanda": "Quale colore identifica il centratore XCP per i settori posteriori nel sistema Rinn?", "opzioni": ["Blu", "Giallo", "Rosso"], "corretta": "Giallo"},
         {"domanda": "Qual è il principale vantaggio clinico della tecnica dei piani paralleli con XCP?", "opzioni": ["Ridurre il tempo di esposizione", "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore", "Evitare l'uso dei DPI"], "corretta": "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore"},
-        {"domanda": "Il centratore endodontico XCP (Verde) viene utilizzato principalmente perché:", "opzioni": ["È più piccolo dei normali centratori", "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma", "Richiega meno radiazioni"], "corretta": "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma"}
+        {"domanda": "Il centratore endodontico XCP (Verde) viene utilizzato principalmente perché:", "opzioni": ["È più piccolo dei normali centratori", "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma", "Richiede meno radiazioni"], "corretta": "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma"}
     ],
     "Assistenza e Gestione Studio": [
         {"domanda": "Quale test si esegue per verificare la penetrazione del vapore nei corpi cavi in autoclave?", "opzioni": ["Bowie & Dick Test", "Helix Test", "Spore Test"], "corretta": "Helix Test"},
@@ -281,13 +240,13 @@ else:
 
     st.title("🦷 Hub Operativo e Linee Guida di Studio")
     
-    # --- EVOLUZIONE PUNTO 2: ASSISTENTE AI DI REPARTO CON MOTORE AVANZATO ---
+    # --- ASSISTENTE AI DI REPARTO CON MOTORE AVANZATO ---
     st.markdown("---")
     with st.container():
         st.markdown("### 🤖 Assistente AI - Supporto Decisionale Clinico e Logistico")
-        st.caption("Il sistema simula un'analisi contestuale avanzata basata su parole chiave e codici articolo Gerhò reali, fornendo lo stato delle scorte in tempo reale.")
+        st.caption("Il sistema esegue un'analisi contestuale avanzata basata su parole chiave e codici articolo Gerhò reali delle frese e dei posizionatori.")
         
-        query_ai = st.text_input("Inserisci un codice articolo o un quesito clinico (es. 'Fresa zekrya' o '542003' o 'protocollo accoglienza'):", placeholder="Chiedi all'AI...")
+        query_ai = st.text_input("Inserisci un codice articolo o un quesito clinico (es. 'Fresa zekrya', '402158' o 'protocollo accoglienza'):", placeholder="Chiedi all'AI...")
         
         if query_ai:
             query_tokens = query_ai.lower().strip().split()
@@ -296,13 +255,12 @@ else:
             # 1. Ricerca flessibile nell'inventario ampliato
             articoli_corrispondenti = []
             for item in STRUMENTARIO_XCP:
-                # Controlla se tutti i token della query sono presenti nel nome, nella ref o nella descrizione dell'articolo
                 match_articolo = all(tk in item["nome"].lower() or tk in item["ref"].lower() or tk in item["descrizione"].lower() for tk in query_tokens)
                 if match_articolo:
                     articoli_corrispondenti.append(item)
             
             if articoli_corrispondenti:
-                st.markdown(f"**🤖 Risposta dell'Assistente AI (Incrocio Inventario e Logistica):**")
+                st.markdown("**🤖 Risposta dell'Assistente AI (Incrocio Inventario e Logistica):**")
                 for xcp in articoli_corrispondenti:
                     stato_scorte = "🟢 Scorte Regolari" if xcp["giacenza"] >= xcp["soglia_minima"] else "🚨 SOTTO SOGLIA - Richiesto Riordino Urgentemente!"
                     colore_alert = st.success if xcp["giacenza"] >= xcp["soglia_minima"] else st.error
@@ -320,22 +278,22 @@ else:
                 for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
                     match_procedura = all(tk in titolo_proc.lower() or tk in contenuto_proc.lower() for tk in query_tokens)
                     if match_procedura:
-                        st.markdown(f"**🤖 Risposta dell'Assistente AI (Protocollo Clinico Identificato):**")
-                        st.info(f"In base alle linee guida interne per la procedura di **{titolo_proc}**, ti ricordo le istruzioni operative operative:\n\n*{contenuto_proc}*")
+                        st.markdown("**🤖 Risposta dell'Assistente AI (Protocollo Clinico Identificato):**")
+                        st.info(f"In base alle linee guida interne per la procedura di **{titolo_proc}**, ti ricordo le istruzioni operative:\n\n*{contenuto_proc}*")
                         risposta_trovata = True
                         break
             
             # 3. Fallback se nessun elemento corrisponde
             if not risposta_trovata:
                 st.warning("🤖 **Risposta dell'Assistente AI:** Non sono riuscito a trovare una corrispondenza esatta per i termini inseriti. "
-                           "Prova a specificare meglio il nome dello strumento (es. 'Zekrya', 'Bitewing') o inserisci un codice numerico Gerhò valido a 6 cifre.")
+                           "Prova a specificare meglio il nome dello strumento (es. 'Zekrya', 'Fiamma', 'Siluro') o inserisci un codice numerico Gerhò valido.")
                 
     st.markdown("---")
 
     # Navigazione principale dei Tab dell'applicazione
     tab_procedure, tab_xcp, tab_mappa, tab_esercitati = st.tabs([
         "📋 Procedure Cliniche", 
-        "Strumentario e Magazzino (Articoli Gerhò)", 
+        "🛠️ Strumentario e Magazzino (Articoli Gerhò)", 
         "🗺️ Anatomia dell'Ambulatorio", 
         "🎯 Esercitati"
     ])
@@ -347,7 +305,7 @@ else:
             with st.expander(f"📖 {proc}", expanded=False):
                 col_testo, col_feedback = st.columns([8, 2])
                 with col_testo:
-                    st.markdown(f"**Protocollo Operativo:**")
+                    st.markdown("**Protocollo Operativo:**")
                     st.write(descrizione)
                 with col_feedback:
                     up_c = st.session_state["voti"][proc]["up"]
@@ -375,11 +333,56 @@ else:
                         st.session_state["commenti"][proc].append(f"[{st.session_state['ruolo']}] {st.session_state['username']}: {nuovo_commento}")
                         st.rerun()
 
-    # --- TAB 2: EVOLUZIONE PUNTO 1: REGISTRO ARTICOLI AMPLIATO CON LOGISTICA ---
+    # --- TAB 2: REGISTRO STRUMENTARIO E SCHEDA DIDATTICA FRESE ---
     with tab_xcp:
         st.header("🛠️ Registro Strumentario Specialistico e Gestione Logistica")
-        st.caption("Prontuario ufficiale dei dispositivi e dei consumabili di reparto. Codici reali sincroni con il catalogo/e-commerce Gerhò.")
+        st.caption("Prontuario ufficiale dei dispositivi e dei consumabili di reparto. Codici reali sincroni con il catalogo Gerhò.")
         
+        # Inserimento della Scheda Didattica sulle Frese all'inizio del Tab
+        with st.expander("📊 Visualizza Scheda Didattica: Forme e Uso Clinico delle Frese", expanded=True):
+            st.markdown("### Scheda: Prodotti utilizzati (Articoli Gerhò)")
+            st.caption("GDPR & Educational Info: Questa scheda è ottimizzata per la memorizzazione visiva, il riconoscimento delle geometrie delle frese e la loro destinazione d'uso clinico.")
+            
+            st.markdown("#### 🎯 Focus Strumento: Fresa Chirurgica Zekrya")
+            col_zek_txt, col_zek_img = st.columns([2, 1])
+            with col_zek_txt:
+                st.write(
+                    "La **fresa Zekrya** è uno degli strumenti chirurgici più importanti in odontoiatria. "
+                    "La sua parte attiva è caratterizzata da una punta arrotondata e non tagliente (per preservare i tessuti molli "
+                    "o il pavimento della camera pulpare) e da lame elicoidali in carburo di tungsteno che tagliano lateralmente "
+                    "in modo estremamente efficiente."
+                )
+            with col_zek_img:
+                st.image("https://dental-rotors.com/wp-content/uploads/2025/01/H151L-ZEKRYA-22mm-large.webp", 
+                         caption="Dettaglio della parte attiva di una fresa Zekrya (Carburo di Tungsteno)", use_container_width=True)
+                
+            st.markdown("---")
+            st.markdown("#### 🗺️ Catalogo Visivo delle Forme ed Uso Clinico")
+            st.write("Usa questa mappa e la tabella sottostante per confrontare le diverse forme geometriche delle frese associate alla loro applicazione clinica sul paziente.")
+            
+            st.image("https://www.dentaltix.com/it/sites/default/files/forma-delle-frese-dentali.jpg", 
+                     caption="Mappa visiva delle principali geometrie delle frese odontoiatriche", use_container_width=True)
+            
+            # Tabella riassuntiva nativa Streamlit
+            st.markdown("**Tabella Comparativa delle Geometrie delle Frese:**")
+            st.markdown(
+                """
+                | Nome della Fresa | Caratteristiche Visive per il Riconoscimento | Destinazione d'Uso Principale |
+                | :--- | :--- | :--- |
+                | **Zekrya Chirurgica** | Gambo lungo, forma conica allungata, lame elicoidali pronunciate, punta liscia non tagliente. | Odontosezione (separazione radici), osteotomia, estrazioni complesse di residui radicolari profondi. |
+                | **Palla (Sferica)** | Testa perfettamente rotonda. Può essere diamantata (ruvida) o multilama in carburo (tagliente). | Apertura della camera pulpare per endodonzia, rimozione della carie (dentina infetta). |
+                | **Cilindrica a punta piatta** | Pareti dritte e parallele, la testa termina con un angolo netto a 90 gradi. | Preparazione di spalle protesiche nette, separazione dei punti di contatto interprossimali. |
+                | **Conica a punta arrotondata** | Pareti strombate che si stringono leggermente verso l'alto; la punta è smussata e dolce. | Preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato). |
+                | **A Siluro (Torpedine)** | Profilo dritto e molto allungato, che termina con una punta ogivale arrotondata. | Preparazione dei margini di finitura per corone in metallo-ceramica o ceramica integrale. |
+                | **A Fiamma** | Forma panciuta al centro che si assottiglia progressivamente verso l'estremità superiore. | Rifinitura e modellazione dei margini occlusali, palatali e dei restauri estetici in resina composita. |
+                """
+            )
+            
+            st.info("💡 **Consiglio per lo studio visivo:** Associa sempre l'immagine del catalogo alla tabella: guarda la forma geometrica del disegno (es. il *Siluro* o la *Palla*) e leggi subito a fianco a cosa serve sulla poltrona. Questo tipo di memoria visiva ti aiuterà a preparare il vassoio per il medico in frazioni di secondo.")
+
+        st.markdown("---")
+        
+        # Sezione di controllo inventario e filtri
         ricerca_xcp = st.text_input("Filtra rapidamente per nome dispositivo o Codice Articolo:", key="search_xcp")
         
         for item in STRUMENTARIO_XCP:
@@ -396,7 +399,6 @@ else:
                         c1.metric(label="Codice Articolo Gerhò", value=item["ref"])
                         c2.metric(label="Giacenza Attuale", value=f"{item['giacenza']} pz")
                         
-                        # Calcolo dello stato di allarme logistico visivo
                         sotto_soglia = item["giacenza"] < item["soglia_minima"]
                         stato_etichetta = "⚠️ RIORDINO EXTRA" if sotto_soglia else "✅ Ottimale"
                         c3.metric(label="Stato Scorta (Minima: " + str(item['soglia_minima']) + ")", value=stato_etichetta)
