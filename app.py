@@ -1,234 +1,421 @@
 import streamlit as st
-import pandas as pd
-from datetime import datetime, date
+import streamlit.components.v1 as components
+import random
 
-# ==========================================
-# CONFIGURAZIONE PAGINA
-# ==========================================
+# Configurazione della pagina
 st.set_page_config(
-    page_title="Piattaforma Formazione - databUSL",
-    page_icon="🎓",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Pannello Operativo Ambulatorio Odontoiatrico",
+    page_icon="🦷",
+    layout="wide"
 )
 
-# Sezione di inizializzazione dello stato dell'applicazione
-if "registro_presenze" not in st.session_state:
-    st.session_state.registro_presenze = pd.DataFrame(columns=[
-        "Data/Ora", "Operatore", "Corso / ID Evento", "Ruolo", "Esito Test", "Note"
-    ])
+# 1. DATABASE UTENTI SIMULATO
+USER_DB = {
+    "admin_founder": {"password": "password123", "ruolo": "Founder", "nome_completo": "Dott. Rossi (Founder)"},
+    "mod_user": {"password": "password456", "ruolo": "Moderatore", "nome_completo": "Coord. Bianchi"},
+    "base_user": {"password": "password789", "ruolo": "Base", "nome_completo": "Ass. Verdi"}
+}
 
-if "checklist_requisiti" not in st.session_state:
-    st.session_state.checklist_requisiti = {
-        "Verifica Iscrizioni e Quote": False,
-        "Controllo Funzionamento Proiettore / Audio": False,
-        "Firma Registro Presenze Iniziale": False,
-        "Distribuzione Materiale Didattico e Dispense": False,
-        "Verifica Connessione Rete Sanitaria per i Test": False
-    }
+# 2. DATABASE DELLE PROCEDURE
+PROCEDURE_DETTAGLI = {
+    "Presa in carico del paziente presso gli studi odontoiatrici": 
+        "Accoglienza del paziente, verifica dell'anamnesi clinica recente e del consenso informato firmato. "
+        "Preparazione della postazione con barriere monouso e sanificazione delle superfici inter-seduta. "
+        "Registrazione dei dati geometrici o radiografici preliminari a terminale prima dell'ingresso del medico.",
+    
+    "Gestione del magazzino e degli ordini di rifornimento": 
+        "Verifica settimanale delle scadenze dei materiali compositi, anestetici e fiale. "
+        "Tracciamento dei lotti di sterilizzazione. Compilazione del registro d'ordine al raggiungimento della soglia minima di scorta "
+        "(es. impianti, frese multilama, siringhe monouso) per evitare blocchi operativi.",
+    
+    "Checklist del reparto": 
+        "Controllo iniziale della pressione del compressore d'aria e dell'aspirazione centralizzata. "
+        "Verifica dei cicli dell'autoclave tramite test biologici e chimici (Helix e Bowie&Dick). "
+        "Rifornimento dei dispenser di DPI (guanti, mascherine, visiere) in ogni singola unità operativa prima dell'inizio del turno.",
+    
+    "Esecuzione di Radiografie Endorali con Tecnica dei Piani Paralleli":
+        "Posizionamento del paziente con piano occlusale parallelo al pavimento. Selezione del centratore XCP corretto "
+        "in base al quadrante da esaminare (Giallo = Posteriore, Blu = Anteriore, Rosso = Bitewing, Verde = Endo). "
+        "Inserimento del sensore digitale protetto da guaina monouso. Allineamento del tubo radiogeno all'anello di mira dell'XCP "
+        "per azzerare gli errori di cono d'ombra e distorsione geometrica."
+}
 
-# Database Statico dei Corsi e dei Contenuti
+# 3. CATALOGO AMPIATO SPECIALISTICA ED INVENTARIO (Codici Articolo reali Gerhò)
+# Integrata gestione scorte per simulazione logistica avanzata
 STRUMENTARIO_XCP = [
+    # --- Linea Diagnostica XCP Rinn ---
     {
-        "ref": "100121",
-        "nome": "Corso BLSD - Rianimazione Cardiopolmonare Adulto/Pediatrico",
-        "tipo": "Formazione Obbligatoria / Emergenza",
-        "descrizione": "Addestramento teorico-pratico sulle manovre di rianimazione cardiopolmonare con utilizzo di defibrillatore semiautomatico esterno (DAE). Conforme alle ultime linee guida ILCOR/ERC. Validità biennale con certificazione regionale.",
-        "immagine": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=200",
-        "ambulatorio": "Aula Magna - Padiglione Formazione"
+        "nome": "Kit Completo Posizionatori XCP Rinn Evolution",
+        "ref": "542001",
+        "tipo": "Kit Completo Diagnostica",
+        "ambulatorio": "Area Diagnostica / Radiologia (Tutti gli studi)",
+        "descrizione": "Kit completo per l'allineamento radiografico endorale con tecnica del parallelismo. Include bracci metallici, anelli di mira e blocchetti di morso per tutti i quadranti. Autoclavabili.",
+        "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
+        "giacenza": 3,
+        "soglia_minima": 2
     },
     {
-        "ref": "100122",
-        "nome": "Gestione del Rischio Clinico e Prevenzione Errori Terapeutici",
-        "tipo": "Sicurezza / Risk Management",
-        "descrizione": "Analisi dei processi assistenziali e metodologie di identificazione, valutazione e gestione dei rischi in ambiente ospedaliero. Focus sulle raccomandazioni ministeriali per la prevenzione degli errori di terapia e la corretta identificazione del paziente.",
-        "immagine": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=200",
-        "ambulatorio": "Aula Formazione A - Piano Terra"
+        "nome": "Posizionatore XCP Rinn Anteriore - Colore Blu",
+        "ref": "542002",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Componenti specifici per i settori anteriori (incisivi e canini). Il set comprende l'anello di mira blu e l'indicatore dedicato.",
+        "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
+        "giacenza": 5,
+        "soglia_minima": 3
     },
     {
-        "ref": "100123",
-        "nome": "Prevenzione delle Infezioni Correlate all'Assistenza (ICA)",
-        "tipo": "Igiene / Controllo Infezioni",
-        "descrizione": "Corso focalizzato sulle buone pratiche di igiene delle mani, l'uso corretto dei dispositivi di protezione individuale (DPI) e i protocolli di sanificazione ambientale. Gestione dell'isolamento funzionale e sorveglianza dei patogeni multi-resistenti.",
-        "immagine": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=200",
-        "ambulatorio": "Aula Formazione B - Primo Piano"
+        "nome": "Posizionatore XCP Rinn Posteriore - Colore Giallo",
+        "ref": "542003",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Componenti specifici per i settori posteriori (molari e premolari). Ottimizza l'allineamento geometrico orizzontale.",
+        "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
+        "giacenza": 2, # Sotto soglia per test logistica
+        "soglia_minima": 4
     },
     {
-        "ref": "100124",
-        "nome": "La Cartella Clinica Elettronica e la Protezione dei Dati (GDPR)",
-        "tipo": "Informatica / Aspetti Legali",
-        "descrizione": "Guida operativa all'utilizzo dei sistemi informativi aziendali per la documentazione sanitaria. Approfondimento sugli obblighi normativi legati al segreto professionale, alla privacy del paziente e alla corretta gestione dei profili di accesso.",
-        "immagine": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=200",
-        "ambulatorio": "Laboratorio Informatico - Seminterrato"
+        "nome": "Posizionatore XCP Rinn Bitewing - Colore Rosso",
+        "ref": "542004",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Radiologia e Diagnostica",
+        "descrizione": "Specifico per radiografie interprossimali per la ricerca di carie e controllo delle creste ossee marginali.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 4,
+        "soglia_minima": 2
+    },
+    {
+        "nome": "Posizionatore XCP Rinn Endodontico - Colore Verde",
+        "ref": "542005",
+        "tipo": "Componente Singolo / Ricambio",
+        "ambulatorio": "Ambulatorio di Endodonzia e Conservativa",
+        "descrizione": "Disegnato appositamente con una struttura scavata per aggirare la diga di gomma o gli aghi endodontici senza perdere stabilità.",
+        "immagine": "https://i.ebayimg.com/images/g/k3UAAeSwKOdp~sVg/s-l400.jpg",
+        "giacenza": 1, # Sotto soglia per test logistica
+        "soglia_minima": 2
+    },
+    {
+        "nome": "Blocchetti di Morso XCP Rinn Posteriori (Conf. da 25 pezzi)",
+        "ref": "540862",
+        "tipo": "Consumabile Riutilizzabile",
+        "ambulatorio": "Magazzino / Studi Clinici",
+        "descrizione": "Blocchetti di ricambio monoblocco in plastica rigida per il posizionamento del sensore posteriore (Giallo). Autoclavabili a 134°C.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 12,
+        "soglia_minima": 5
+    },
+    # --- Nuova Linea Specialistica: Frese e Chirurgia ---
+    {
+        "nome": "Fresa Multilama in Carburo di Tungsteno per Chirurgia Zekrya",
+        "ref": "110432",
+        "tipo": "Strumentario Rotante / Chirurgia",
+        "ambulatorio": "Ambulatorio di Chirurgia e Implantologia",
+        "descrizione": "Fresa a testa emisferica e taglienti laterali ideata per l'odontotomia, la separazione delle radici e la resezione ossea. Lunghezza FGXL.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 15,
+        "soglia_minima": 6
+    },
+    {
+        "nome": "Fresa Diamantata a Palla per Conservativa - Grana Media",
+        "ref": "402154",
+        "tipo": "Strumentario Rotante / Conservativa",
+        "ambulatorio": "Tutti gli studi / Conservativa",
+        "descrizione": "Fresa diamantata sferica per l'apertura della cavità cariosa e l'escavazione della dentina infetta. Alta precisione di taglio.",
+        "immagine": "https://static.wixstatic.com/media/45eb7b_585772237ea4419b910cfdb58a441178~mv2.png/v1/fit/w_500,h_500,q_90/file.png",
+        "giacenza": 3, # Sotto soglia per test logistica
+        "soglia_minima": 10
     }
 ]
 
-PROCEDURE_CARD = {
-    "titolo": "Procedura Operativa Standard per l'Accreditamento ECM dei Corsi Residenziali",
-    "codice": "POS-FORM-ECM-005-REV02",
-    "ambulatori": ["Ufficio Formazione", "Aule Didattiche Presidio Ospedaliero"],
-    "responsabile": "Dirigente Responsabile UOSD Formazione / Provider ECM",
-    "obiettivi": [
-        "Garantire il rispetto dei criteri Agenas per l'erogazione dei crediti formativi.",
-        "Assicurare la corretta rilevazione delle presenze e la tracciabilità delle schede di valutazione.",
-        "Standardizzare il flusso documentale dalla pianificazione dell'evento alla rendicontazione finale."
+# 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
+QUIZ_DATA = {
+    "Diagnostica XCP e Radioprotezione": [
+        {"domanda": "Quale colore identifica il centratore XCP per i settori posteriori nel sistema Rinn?", "opzioni": ["Blu", "Giallo", "Rosso"], "corretta": "Giallo"},
+        {"domanda": "Qual è il principale vantaggio clinico della tecnica dei piani paralleli con XCP?", "opzioni": ["Ridurre il tempo di esposizione", "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore", "Evitare l'uso dei DPI"], "corretta": "Azzerare le distorsioni geometriche e i coni d'ombra sulla pellicola/sensore"},
+        {"domanda": "Il centratore endodontico XCP (Verde) viene utilizzato principalmente perché:", "opzioni": ["È più piccolo dei normali centratori", "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma", "Richiega meno radiazioni"], "corretta": "Permette l'allineamento stabile scavalcando file e ganci della diga di gomma"}
     ],
-    "fasi": [
-        {"fase": "1. Predisposizione Evento", "dettaglio": "Caricamento dell'evento sulla piattaforma Agenas almeno 30 giorni prima dell'inizio. Verifica dei CV dei docenti, del programma didattico e del conflitto di interessi. Generazione dei codici identificativi dell'evento."},
-        {"fase": "2. Controllo Accessi", "dettaglio": "Rilevazione della presenza dei partecipanti tramite firma manuale su registro ufficiale o lettura ottica del badge aziendale all'ingresso e all'uscita di ogni singola sessione formativa."},
-        {"fase": "3. Valutazione e Apprendimento", "dettaglio": "Somministrazione del test di verifica dell'apprendimento (domande a risposta multipla con doppia rotazione) e del questionario di gradimento della qualità percepita al termine delle ore di lezione."},
-        {"fase": "4. Rendicontazione", "dettaglio": "Verifica del superamento del test (almeno 75% di risposte esatte) e della frequenza (almeno 90% delle ore totali). Invio del report finale all'ente nazionale entro 90 giorni dalla chiusura dell'evento."}
-    ],
-    "alert_sicurezza": "⚠️ NOTA DI CONFORMITÀ: La mancata corrispondenza tra le firme di presenza e i tracciati informatici dei test, o il mancato raggiungimento della soglia minima di frequenza, comporta l'annullamento immediato dell'attribuzione dei crediti formativi per il singolo discente, con obbligo di segnalazione nel report di sistema."
+    "Assistenza e Gestione Studio": [
+        {"domanda": "Quale test si esegue per verificare la penetrazione del vapore nei corpi cavi in autoclave?", "opzioni": ["Bowie & Dick Test", "Helix Test", "Spore Test"], "corretta": "Helix Test"},
+        {"domanda": "Come vanno trattati i componenti dei centratori XCP dopo l'uso sul paziente?", "opzioni": ["Solo sciacquati con clorexidina", "Detersi, disinfettati, imbustati e sterilizzati in autoclave a 134°C", "Trattati con sterilizzazione a freddo per 10 minuti"], "corretta": "Detersi, disinfettati, imbustati e sterilizzati in autoclave a 134°C"}
+    ]
 }
 
-# ==========================================
-# INTERFACCIA UTENTE PRINCIPALE
-# ==========================================
-st.title("🎓 databUSL - Portale Gestione Formazione Permanente")
-st.subheader("Sistema di Tracciabilità dei Corsi, Registrazione Presenze e Verifiche ECM")
-st.markdown("---")
+# 5. INIZIALIZZAZIONE SESSION STATE
+if "autenticato" not in st.session_state:
+    st.session_state["autenticato"] = False
+    st.session_state["username"] = ""
+    st.session_state["ruolo"] = ""
 
-tab_check, tab_xcp, tab_lavaggio, tab_procedura = st.tabs([
-    "📋 CHECKLIST PRE-CORSO", 
-    "📚 CATALOGO FORMATIVO", 
-    "✍️ REGISTRO PRESENZE", 
-    "📖 REGOLAMENTO ECM"
-])
+if "commenti" not in st.session_state:
+    st.session_state["commenti"] = {titolo: [] for titolo in PROCEDURE_DETTAGLI.keys()}
 
-# --- TAB 1: CHECKLIST PRE-CORSO ---
-with tab_check:
-    st.header("📋 Verifiche Obbligatorie Prima dell'Inizio del Corso")
-    st.caption("Controlli preliminari a cura del tutor d'aula per garantire la conformità agli standard organizzativi aziendali ed ECM.")
-    
-    col_check, col_status = st.columns([2, 1])
-    
-    with col_check:
-        completati = 0
-        for task in st.session_state.checklist_requisiti.keys():
-            st.session_state.checklist_requisiti[task] = st.checkbox(task, value=st.session_state.checklist_requisiti[task])
-            if st.session_state.checklist_requisiti[task]:
-                completati += 1
-                
-    with col_status:
-        totale_task = len(st.session_state.checklist_requisiti)
-        percentuale = int((completati / totale_task) * 100)
-        
-        st.metric(label="Requisiti Verificati", value=f"{completati} / {totale_task}", delta=f"{percentuale}%")
-        st.progress(completati / totale_task)
-        
-        if completati == totale_task:
-            st.success("✅ Aula conforme! È possibile avviare la sessione formativa e consentire l'accesso ai discenti.")
-        else:
-            st.warning("⚠️ Controlli incompleti. Completare le verifiche logistiche e amministrative prima dell'arrivo del docente.")
+if "voti" not in st.session_state:
+    st.session_state["voti"] = {titolo: {"up": 0, "down": 0} for titolo in PROCEDURE_DETTAGLI.keys()}
 
-# --- TAB 2: CATALOGO FORMATIVO ---
-with tab_xcp:
-    st.header("📚 Catalogo Nazionale e Aziendale dei Corsi Disponibili")
-    st.caption("Prontuario degli eventi formativi accreditati. I codici di riferimento sono sincronizzati con il sistema di gestione del personale.")
-    
-    categorie_disponibili = ["Tutti", "Formazione Obbligatoria / Emergenza", "Sicurezza / Risk Management", "Igiene / Controllo Infezioni", "Informatica / Aspetti Legali"]
-    categoria_scelta = st.selectbox("Seleziona Area Tematica:", categorie_disponibili)
-    
-    ricerca_xcp = st.text_input("Filtra rapidamente per titolo, codice REF o parole chiave:", key="search_xcp")
-    
-    prodotti_filtrati = []
-    for item in STRUMENTARIO_XCP:
-        match_categoria = (categoria_scelta == "Tutti") or (categoria_scelta in item["tipo"])
-        match_ricerca = (ricerca_xcp.lower() in item["nome"].lower()) or (ricerca_xcp.lower() in item["ref"].lower()) or (ricerca_xcp.lower() in item["descrizione"].lower())
-        
-        if match_categoria and match_ricerca:
-            prodotti_filtrati.append(item)
-            
-    if not prodotti_filtrati:
-        st.warning("Nessun corso risponde ai criteri di ricerca impostati.")
-    else:
-        for item in prodotti_filtrati:
-            with st.container():
-                col_img, col_info = st.columns([1, 4])
-                
-                with col_img:
-                    st.image(item["immagine"], caption=f"ID {item['ref']}", use_container_width=True)
-                
-                with col_info:
-                    st.subheader(item["nome"])
-                    c1, c2, c3 = st.columns(3)
-                    c1.metric(label="Codice Evento ECM", value=item["ref"])
-                    c2.metric(label="Macro Area", value=item["tipo"].split(" / ")[0])
-                    c3.markdown(f"📍 **Sede di Svolgimento:**\n`{item['ambulatorio']}`")
-                    
-                    st.markdown(f"📝 **Programma e Obiettivi Didattici:** {item['descrizione']}")
-                
-                st.markdown("---")
+if "classifica" not in st.session_state:
+    st.session_state["classifica"] = {"Coord. Bianchi": 120, "Ass. Verdi": 95, "Dott. Rossi (Founder)": 40}
 
-# --- TAB 3: REGISTRO PRESENZE ---
-with tab_lavaggio:
-    st.header("✍️ Registro Sessione e Tracciabilità Partecipanti")
-    st.caption("Modulo elettronico integrativo per la validazione della frequenza d'aula e la verbalizzazione dell'esito della prova finale.")
-    
-    col_form, col_data = st.columns([1, 2])
-    
-    with col_form:
-        st.subheader("Registra Presenza / Test")
-        with st.form("form_lavaggio", clear_on_submit=True):
-            operatore = st.text_input("Nome e Cognome Dipendente:", placeholder="es. Dott. Rossi Mario")
-            tipo_strumento = st.selectbox("Corso Selezionato:", [item["nome"] for item in STRUMENTARIO_XCP] + ["Corso Antincendio Rischio Elevato", "Primo Soccorso Aziendale"])
-            metodo = st.radio("Profilo Professionale:", ["Personale Infermieristico", "Personale Medico", "Operatore Socio Sanitario (OSS)", "Personale Amministrativo"])
-            esito = st.selectbox("Esito Prova di Apprendimento Finale:", ["Idoneo (Test Superato >= 75%)", "Non Idoneo (Test fallito - Da ripetere)", "Assente alla prova di verifica"])
-            note = st.text_area("Note del Tutor / Giustificativi Orari:", placeholder="Es: Allontanatosi dall'aula dalle 11:00 alle 11:30 per urgenza di servizio.")
-            
-            submit = st.form_submit_button("Salva ed Archivia nel Registro")
-            
-            if submit:
-                if operatore.strip() == "":
-                    st.error("Errore di validazione: specificare il nominativo del dipendente per completare la registrazione.")
+if "quiz_attivo" not in st.session_state:
+    st.session_state["quiz_attivo"] = False
+    st.session_state["domande_selezionate"] = []
+    st.session_state["indice_domanda"] = 0
+    st.session_state["punteggio_sessione"] = 0
+
+# Funzioni di supporto
+def elimina_commento(procedura, indice):
+    st.session_state["commenti"][procedura].pop(indice)
+
+def vota_up(procedura):
+    st.session_state["voti"][procedura]["up"] += 1
+
+def vota_down(procedura):
+    st.session_state["voti"][procedura]["down"] += 1
+
+# 6. INTERFACCIA DI LOGIN
+if not st.session_state["autenticato"]:
+    st.title("🔒 Piattaforma Sperimentale Odontoiatrica")
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        with st.form("Login Form"):
+            username_input = st.text_input("Username").strip()
+            password_input = st.text_input("Password", type="password")
+            submit_login = st.form_submit_button("Accedi")
+            if submit_login:
+                if username_input in USER_DB and USER_DB[username_input]["password"] == password_input:
+                    st.session_state["autenticato"] = True
+                    st.session_state["username"] = username_input
+                    st.session_state["ruolo"] = USER_DB[username_input]["ruolo"]
+                    st.rerun()
                 else:
-                    nuovo_record = {
-                        "Data/Ora": datetime.now().strftime("%d/%m/%Y %H:%M"),
-                        "Operatore": operatore,
-                        "Corso / ID Evento": tipo_strumento,
-                        "Ruolo": metodo,
-                        "Esito Test": esito,
-                        "Note": note
-                    }
-                    st.session_state.registro_presenze = pd.concat([
-                        pd.DataFrame([nuovo_record]), st.session_state.registro_presenze
-                    ], ignore_index=True)
-                    st.success("Presenza archiviata con successo nel sistema.")
-                    
-    with col_data:
-        st.subheader("Tracciato Log dei Partecipanti Registrati")
-        if st.session_state.registro_presenze.empty:
-            st.info("Nessun operatore inserito nel registro d'aula per la sessione corrente.")
-        else:
-            st.dataframe(st.session_state.registro_presenze, use_container_width=True)
-            
-            csv_data = st.session_state.registro_presenze.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="📥 Scarica File di Esportazione per Agenas (CSV)",
-                data=csv_data,
-                file_name=f"export_ecm_{date.today().strftime('%Y%m%d')}.csv",
-                mime="text/csv"
-            )
+                    st.error("Credenziali errate.")
 
-# --- TAB 4: REGOLAMENTO ECM ---
-with tab_procedura:
-    st.header("📖 Quadro Normativo e Linee Guida di Riferimento")
-    st.caption("Consultazione delle direttive per l'erogazione della formazione continua in ambito sanitario.")
+# 7. AREA APPLICAZIONE PRINCIPALE
+else:
+    with st.sidebar:
+        st.subheader(f"👤 {st.session_state['username']}")
+        st.info(f"Ruolo: **{st.session_state['ruolo']}**")
+        if st.button("Effettua Logout", use_container_width=True):
+            st.session_state["autenticato"] = False
+            st.rerun()
+
+    st.title("🦷 Hub Operativo e Linee Guida di Studio")
     
-    st.markdown(f"### {PROCEDURE_CARD['titolo']}")
-    
-    c_cod, c_resp = st.columns(2)
-    c_cod.markdown(f"**Identificativo Procedura:** `{PROCEDURE_CARD['codice']}`")
-    c_resp.markdown(f"**Ufficio Garante del Flusso:** {PROCEDURE_CARD['responsabile']}")
-    
-    st.markdown("#### 🎯 Obiettivi di Qualità del Sistema")
-    for ob in PROCEDURE_CARD["obiettivi"]:
-        st.markdown(f"- {ob}")
+    # --- EVOLUZIONE PUNTO 2: ASSISTENTE AI DI REPARTO CON MOTORE AVANZATO ---
+    st.markdown("---")
+    with st.container():
+        st.markdown("### 🤖 Assistente AI - Supporto Decisionale Clinico e Logistico")
+        st.caption("Il sistema simula un'analisi contestuale avanzata basata su parole chiave e codici articolo Gerhò reali, fornendo lo stato delle scorte in tempo reale.")
         
-    st.markdown("#### 🗺️ Fasi del Processo di Validazione")
-    for fase in PROCEDURE_CARD["fasi"]:
-        with st.expander(fase["fase"], expanded=True):
-            st.write(fase["dettaglio"])
+        query_ai = st.text_input("Inserisci un codice articolo o un quesito clinico (es. 'Fresa zekrya' o '542003' o 'protocollo accoglienza'):", placeholder="Chiedi all'AI...")
+        
+        if query_ai:
+            query_tokens = query_ai.lower().strip().split()
+            risposta_trovata = False
             
-    st.error(PROCEDURE_CARD["alert_sicurezza"])
+            # 1. Ricerca flessibile nell'inventario ampliato
+            articoli_corrispondenti = []
+            for item in STRUMENTARIO_XCP:
+                # Controlla se tutti i token della query sono presenti nel nome, nella ref o nella descrizione dell'articolo
+                match_articolo = all(tk in item["nome"].lower() or tk in item["ref"].lower() or tk in item["descrizione"].lower() for tk in query_tokens)
+                if match_articolo:
+                    articoli_corrispondenti.append(item)
+            
+            if articoli_corrispondenti:
+                st.markdown(f"**🤖 Risposta dell'Assistente AI (Incrocio Inventario e Logistica):**")
+                for xcp in articoli_corrispondenti:
+                    stato_scorte = "🟢 Scorte Regolari" if xcp["giacenza"] >= xcp["soglia_minima"] else "🚨 SOTTO SOGLIA - Richiesto Riordino Urgentemente!"
+                    colore_alert = st.success if xcp["giacenza"] >= xcp["soglia_minima"] else st.error
+                    
+                    logistica_msg = f"\n\n📊 **Stato Logistico**: {stato_scorte} (In giacenza: {xcp['giacenza']} pz | Soglia minima: {xcp['soglia_minima']} pz)"
+                    
+                    colore_alert(f"Ho identificato lo strumento specialistico nel catalogo Gerhò:\n\n"
+                                 f"📦 **Articolo**: {xcp['nome']} (Codice REF: `{xcp['ref']}`)\n"
+                                 f"📍 **Destinazione principale**: {xcp['ambulatorio']}\n"
+                                 f"⚙️ **Specifiche d'uso**: {xcp['descrizione']}" + logistica_msg)
+                risposta_trovata = True
+            
+            # 2. Ricerca flessibile nel database delle procedure generali
+            if not risposta_trovata:
+                for titolo_proc, contenuto_proc in PROCEDURE_DETTAGLI.items():
+                    match_procedura = all(tk in titolo_proc.lower() or tk in contenuto_proc.lower() for tk in query_tokens)
+                    if match_procedura:
+                        st.markdown(f"**🤖 Risposta dell'Assistente AI (Protocollo Clinico Identificato):**")
+                        st.info(f"In base alle linee guida interne per la procedura di **{titolo_proc}**, ti ricordo le istruzioni operative operative:\n\n*{contenuto_proc}*")
+                        risposta_trovata = True
+                        break
+            
+            # 3. Fallback se nessun elemento corrisponde
+            if not risposta_trovata:
+                st.warning("🤖 **Risposta dell'Assistente AI:** Non sono riuscito a trovare una corrispondenza esatta per i termini inseriti. "
+                           "Prova a specificare meglio il nome dello strumento (es. 'Zekrya', 'Bitewing') o inserisci un codice numerico Gerhò valido a 6 cifre.")
+                
+    st.markdown("---")
+
+    # Navigazione principale dei Tab dell'applicazione
+    tab_procedure, tab_xcp, tab_mappa, tab_esercitati = st.tabs([
+        "📋 Procedure Cliniche", 
+        "Strumentario e Magazzino (Articoli Gerhò)", 
+        "🗺️ Anatomia dell'Ambulatorio", 
+        "🎯 Esercitati"
+    ])
+
+    # --- TAB 1: PROCEDURE CLINICHE ---
+    with tab_procedure:
+        st.header("Protocolli e Standard di Assistenza")
+        for proc, descrizione in PROCEDURE_DETTAGLI.items():
+            with st.expander(f"📖 {proc}", expanded=False):
+                col_testo, col_feedback = st.columns([8, 2])
+                with col_testo:
+                    st.markdown(f"**Protocollo Operativo:**")
+                    st.write(descrizione)
+                with col_feedback:
+                    up_c = st.session_state["voti"][proc]["up"]
+                    down_c = st.session_state["voti"][proc]["down"]
+                    sub_col1, sub_col2 = st.columns(2)
+                    with sub_col1:
+                        st.button(f"︎🤝 {up_c}", key=f"up_{proc}", on_click=vota_up, args=(proc,), use_container_width=True)
+                    with sub_col2:
+                        st.button(f"︎⚠ {down_c}", key=f"down_{proc}", on_click=vota_down, args=(proc,), use_container_width=True)
+                
+                st.write("---")
+                st.markdown("**Discussione e Note di Reparto:**")
+                lista_commenti = st.session_state["commenti"][proc]
+                if lista_commenti:
+                    for idx, commento in enumerate(lista_commenti):
+                        st.markdown(f"{commento}")
+                        if st.session_state["ruolo"] in ["Founder", "Moderatore"]:
+                            st.button("🗑️ Elimina Nota", key=f"del_{proc}_{idx}", on_click=elimina_commento, args=(proc, idx))
+                else:
+                    st.info("Nessuna nota operativa inserita.")
+                
+                with st.form(key=f"form_{proc}", clear_on_submit=True):
+                    nuovo_commento = st.text_area("Inserisci un'osservazione:", max_chars=200, key=f"txt_{proc}")
+                    if st.form_submit_button("Invia Nota") and nuovo_commento.strip() != "":
+                        st.session_state["commenti"][proc].append(f"[{st.session_state['ruolo']}] {st.session_state['username']}: {nuovo_commento}")
+                        st.rerun()
+
+    # --- TAB 2: EVOLUZIONE PUNTO 1: REGISTRO ARTICOLI AMPLIATO CON LOGISTICA ---
+    with tab_xcp:
+        st.header("🛠️ Registro Strumentario Specialistico e Gestione Logistica")
+        st.caption("Prontuario ufficiale dei dispositivi e dei consumabili di reparto. Codici reali sincroni con il catalogo/e-commerce Gerhò.")
+        
+        ricerca_xcp = st.text_input("Filtra rapidamente per nome dispositivo o Codice Articolo:", key="search_xcp")
+        
+        for item in STRUMENTARIO_XCP:
+            if ricerca_xcp.lower() in item["nome"].lower() or ricerca_xcp.lower() in item["ref"].lower():
+                with st.container():
+                    col_img, col_info = st.columns([1, 2])
+                    
+                    with col_img:
+                        st.image(item["immagine"], caption=item["nome"], use_container_width=True)
+                    
+                    with col_info:
+                        st.subheader(item["nome"])
+                        c1, c2, c3 = st.columns(3)
+                        c1.metric(label="Codice Articolo Gerhò", value=item["ref"])
+                        c2.metric(label="Giacenza Attuale", value=f"{item['giacenza']} pz")
+                        
+                        # Calcolo dello stato di allarme logistico visivo
+                        sotto_soglia = item["giacenza"] < item["soglia_minima"]
+                        stato_etichetta = "⚠️ RIORDINO EXTRA" if sotto_soglia else "✅ Ottimale"
+                        c3.metric(label="Stato Scorta (Minima: " + str(item['soglia_minima']) + ")", value=stato_etichetta)
+                        
+                        if sotto_soglia:
+                            st.error(f"🚨 **Avviso di Magazzino:** La scorta attuale è inferiore alla soglia di sicurezza imposta ({item['soglia_minima']} pz). Compilare la scheda d'ordine.")
+                        
+                        st.markdown(f"📍 **Collocazione / Uso prevalente:** `{item['ambulatorio']}`")
+                        st.markdown(f"📝 **Indicazioni e specifiche cliniche:** {item['descrizione']}")
+                    
+                    st.markdown("---")
+
+    # --- TAB 3: MAPPA INTERATTIVA ---
+    with tab_mappa:
+        st.header("Mappa Interattiva dell'Ambulatorio")
+        html_content = """
+        <!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
+        .container { position: relative; width: 100%; max-width: 900px; margin: 0 auto; }
+        .image { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .hotspot { position: absolute; width: 26px; height: 26px; background-color: #FF4B4B; border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.6); animation: pulse 2.5s infinite; z-index: 10; }
+        #hp1 { top: 65%; left: 45%; } #hp2 { top: 25%; left: 50%; } #hp3 { top: 70%; left: 22%; } #hp4 { top: 60%; left: 63%; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.8); } 70% { box-shadow: 0 0 0 12px rgba(255, 75, 75, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); } }
+        .modal { display: none; position: absolute; top: 20%; left: 75%; background-color: white; padding: 16px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); width: 250px; z-index: 100; border-left: 5px solid #FF4B4B; font-family: sans-serif; }
+        .modal h4 { margin: 0 0 6px 0; color: #31333F; font-size: 15px; }
+        .modal p { margin: 0; font-size: 12.5px; color: #555; line-height: 1.4; }
+        .close-btn { float: right; cursor: pointer; font-weight: bold; color: #999; font-size: 16px; }
+        </style></head><body><div class="container">
+          <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80" class="image">
+          <div class="hotspot" id="hp1" onclick="showInfo('Riunito Odontoiatrico', 'Poltrona del paziente a movimentazione elettromeccanica. Checklist: Eseguire la decontaminazione dei circuiti idrici (sistema Flushing) all inizio di ogni turno.')"></div>
+          <div class="hotspot" id="hp2" onclick="showInfo('Lampada Scialitica', 'Sorgente luminosa orientabile a LED per il campo operatorio. Checklist: Pulire esclusivamente a freddo con detergenti non alcolici sulle parabole.')"></div>
+          <div class="hotspot" id="hp3" onclick="showInfo('Consolle Servomobile Strumenti', 'Supporto principale per manipoli. Checklist: Lubrificare i manipoli dopo ogni ciclo d uso prima dell imbustamento e passaggio in autoclave.')"></div>
+          <div class="hotspot" id="hp4" onclick="showInfo('Area Stoccaggio e Lavello', 'Piano di lavoro per la preparazione dei materiali. Checklist: Mantenere la netta separazione tra area sporca e area pulita.')"></div>
+          <div id="infoModal" class="modal"><span class="close-btn" onclick="closeModal()">&times;</span><h4 id="modalTitle">Componente</h4><p id="modalDesc"></p></div>
+        </div><script>
+        function showInfo(title, text) { document.getElementById("modalTitle").innerText = title; document.getElementById("modalDesc").innerText = text; document.getElementById("infoModal").style.display = "block"; }
+        function closeModal() { document.getElementById("infoModal").style.display = "none"; }
+        </script></body></html>
+        """
+        components.html(html_content, height=650, scrolling=False)
+
+    # --- TAB 4: GAMIFICATION E AUTOVALUTAZIONE ---
+    with tab_esercitati:
+        st.header("🎯 Sistema di Autovalutazione e Gamification")
+        col_quiz, col_classifica = st.columns([6, 4])
+        
+        with col_quiz:
+            st.subheader("🛠️ Configura la tua Esercitazione")
+            if not st.session_state["quiz_attivo"]:
+                btn_argomento, btn_tutto = st.columns(2)
+                with btn_argomento:
+                    if st.button("📚 Esercitati per Argomento", use_container_width=True):
+                        argomento = random.choice(list(QUIZ_DATA.keys()))
+                        st.session_state["domande_selezionate"] = QUIZ_DATA[argomento]
+                        st.session_state["quiz_attivo"] = True
+                        st.session_state["indice_domanda"] = 0
+                        st.session_state["punteggio_sessione"] = 0
+                        st.rerun()
+                with btn_tutto:
+                    if st.button("🌐 Esercitati su Tutto", use_container_width=True):
+                        tutte_le_domande = []
+                        for lista in QUIZ_DATA.values():
+                            tutte_le_domande.extend(lista)
+                        random.shuffle(tutte_le_domande)
+                        st.session_state["domande_selezionate"] = tutte_le_domande
+                        st.session_state["quiz_attivo"] = True
+                        st.session_state["indice_domanda"] = 0
+                        st.session_state["punteggio_sessione"] = 0
+                        st.rerun()
+                st.info("Scegli una modalità per avviare il set di domande interattive di reparto.")
+            else:
+                lista_domande = st.session_state["domande_selezionate"]
+                attuale = st.session_state["indice_domanda"]
+                
+                if attuale < len(lista_domande):
+                    dati_domanda = lista_domande[attuale]
+                    st.markdown(f"**Domanda {attuale + 1} di {len(lista_domande)}**")
+                    st.info(dati_domanda["domanda"])
+                    risposta = st.radio("Seleziona la risposta corretta:", dati_domanda["opzioni"], key=f"q_{attuale}")
+                    
+                    if st.button("Conferma Risposta ➔", use_container_width=True):
+                        if risposta == dati_domanda["corretta"]:
+                            st.session_state["punteggio_sessione"] += 10
+                        st.session_state["indice_domanda"] += 1
+                        st.rerun()
+                else:
+                    st.success(f"🎉 Esercitazione completata! Punteggio ottenuto: +{st.session_state['punteggio_sessione']} punti.")
+                    nome_utente_attuale = USER_DB[st.session_state["username"]]["nome_completo"]
+                    st.session_state["classifica"][nome_utente_attuale] += st.session_state["punteggio_sessione"]
+                    
+                    if st.button("Chiudi e Salva in Classifica", use_container_width=True):
+                        st.session_state["quiz_attivo"] = False
+                        st.rerun()
+
+        with col_classifica:
+            st.subheader("🏆 Classifica di Studio")
+            classifica_ordinata = sorted(st.session_state["classifica"].items(), key=lambda item: item[1], reverse=True)
+            for posizione, (operatore, punti) in enumerate(classifica_ordinata, start=1):
+                medaglia = "🥇" if posizione == 1 else "🥈" if posizione == 2 else "🥉" if posizione == 3 else "👤"
+                nome_connesso = USER_DB[st.session_state["username"]]["nome_completo"]
+                if operatore == nome_connesso:
+                    st.markdown(f"**{medaglia} Posizione {posizione}: {operatore} — {punti} PT (Tu)** 🌟")
+                else:
+                    st.markdown(f"{medaglia} Posizione {posizione}: {operatore} — {punti} PT")
