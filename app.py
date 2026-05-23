@@ -125,7 +125,88 @@ STRUMENTARIO_XCP = [
         "giacenza": 3, # Sotto soglia per test logistica
         "soglia_minima": 10
     }
-]
+<!-- SCHEDA: PRODOTTI UTILIZZATI (ARTICOLI GERHÒ) -->
+<div class="scheda-prodotti" style="font-family: 'Google Sans', Arial, sans-serif; color: #333; line-height: 1.25;">
+    
+    <h2 style="color: #004B87;">Scheda: Prodotti utilizzati (Articoli Gerhò)</h2>
+    <p><em>Nota didattica: Questa scheda è ottimizzata per la memorizzazione visiva, il riconoscimento delle geometrie delle frese e la loro destinazione d'uso clinico. La gestione delle scorte e delle quantità di magazzino è stata rimossa.</em></p>
+    
+    <br>
+
+    <h3 style="color: #0073aa;">Focus Strumento: Fresa Chirurgica Zekrya</h3>
+    <p>La <strong>fresa Zekrya</strong> è uno degli strumenti chirurgici più importanti in odontoiatria. La sua parte attiva è caratterizzata da una punta arrotondata e non tagliente (per preservare i tessuti molli o il pavimento della camera pulpare) e da lame elicoidali in carburo di tungsteno che tagliano lateralmente in modo estremamente efficiente.</p>
+    
+    <!-- Immagine reale della Zekrya incorporata nel codice -->
+    <div class="image-container" style="text-align: center; margin: 25px 0;">
+        <img src="https://dental-rotors.com/wp-content/uploads/2025/01/H151L-ZEKRYA-22mm-large.webp" alt="Fresa chirurgica Zekrya con lame elicoidali in carburo di tungsteno" style="max-width: 350px; width: 100%; height: auto; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
+        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">Dettaglio della parte attiva di una fresa Zekrya (Carburo di Tungsteno)</p>
+    </div>
+
+    <br>
+
+    <h3 style="color: #0073aa;">Catalogo Visivo delle Forme ed Uso Clinico</h3>
+    <p>Usa questa guida visiva per confrontare le diverse forme geometriche delle frese, associando l'aspetto grafico al nome corretto e alla sua applicazione sul paziente.</p>
+
+    <!-- Immagine del catalogo delle forme incorporata nel codice -->
+    <div class="image-container" style="text-align: center; margin: 25px 0;">
+        <img src="https://www.dentaltix.com/it/sites/default/files/forma-delle-frese-dentali.jpg" alt="Tabella comparativa delle forme delle frese dentali: palla, fiamma, cilindro, siluro" style="max-width: 100%; height: auto; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
+        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">Mappa visiva delle principali geometrie delle frese odontoiatriche</p>
+    </div>
+
+    <br>
+
+    <!-- Tabella didattica delle frese -->
+    <table border="1" cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #e0e0e0;">
+        <thead>
+            <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #004B87;">
+                <th style="color: #004B87;">Nome della Fresa</th>
+                <th style="color: #004B87;">Caratteristiche Visive per il Riconoscimento</th>
+                <th style="color: #004B87;">Destinazione d'Uso Principale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Zekrya Chirurgica</strong></td>
+                <td>Gambo lungo, forma conica allungata, lame elicoidali pronunciate, punta liscia non tagliente.</td>
+                <td>Odontosezione (separazione radici), osteotomia, estrazioni complesse di residui radicolari profondi.</td>
+            </tr>
+            <tr>
+                <td><strong>Palla (Sferica)</strong></td>
+                <td>Testa perfettamente rotonda. Può essere diamantata (ruvida) o multilama in carburo (tagliente).</td>
+                <td>Apertura della camera pulpare per endodonzia, rimozione della carie (dentina infetta).</td>
+            </tr>
+            <tr>
+                <td><strong>Cilindrica a punta piatta</strong></td>
+                <td>Pareti dritte e parallele, la testa termina con un angolo netto a 90 gradi.</td>
+                <td>Preparazione di spalle protesiche nette, separazione dei punti di contatto interprossimali.</td>
+            </tr>
+            <tr>
+                <td><strong>Conica a punta arrotondata</strong></td>
+                <td>Pareti strombate che si stringono leggermente verso l'alto; la punta è smussata e dolce.</td>
+                <td>Preparazione di monconi protesici per corone, creando una linea di finitura a chamfer (gradino sfumato).</td>
+            </tr>
+            <tr>
+                <td><strong>A Siluro (Torpedine)</strong></td>
+                <td>Profilo dritto e molto allungato, che termina con una punta ogivale arrotondata.</td>
+                <td>Preparazione dei margini di finitura per corone in metallo-ceramica o ceramica integrale.</td>
+            </tr>
+            <tr>
+                <td><strong>A Fiamma</strong></td>
+                <td>Forma panciuta al centro che si assottiglia progressivamente verso l'estremità superiore.</td>
+                <td>Rifinitura e modellazione dei margini occlusali, palatali e dei restauri estetici in resina composita.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <!-- Box didattico finale -->
+    <div class="info-box" style="background-color: #f4f6f8; border-left: 4px solid #004B87; padding: 15px; margin-top: 25px; border-radius: 0 4px 4px 0;">
+        <p style="margin: 0; font-weight: bold; color: #004B87;">💡 Consiglio per lo studio visivo:</p>
+        <p style="margin: 5px 0 0 0;">Associa sempre l'immagine del catalogo alla tabella: guarda la forma geometrica del disegno (es. il <em>Siluro</em> o la <em>Palla</em>) e leggi subito a fianco a cosa serve sulla poltrona. Questo tipo di memoria visiva ti aiuterà a preparare il vassoio per il medico in frazioni di secondo.</p>
+    </div>
+
+</div>]
 
 # 4. POOL DI DOMANDE PER IL SISTEMA DI GAMIFICATION
 QUIZ_DATA = {
